@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../theme/app_theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class CustomBottomNav extends StatelessWidget {
+class ModernDarkNavBar extends StatelessWidget {
   final Function(int) onTabSelected;
   final int selectedIndex;
 
-  const CustomBottomNav({
+  const ModernDarkNavBar({
     super.key,
     required this.onTabSelected,
     required this.selectedIndex,
@@ -14,99 +14,70 @@ class CustomBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Colors.transparent, Colors.black],
-          stops: [0.0, 0.5],
+        color: Colors.black,
+        border: Border(
+          top: BorderSide(color: Color(0xFF222222), width: 1.5),
         ),
       ),
-      child: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          Container(
-            height: 60,
-            padding: const EdgeInsets.only(bottom: 10),
-            color: AppTheme.background,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildNavItem(0, Icons.grid_view_outlined, "Home"),
-                _buildNavItem(1, Icons.receipt_long_outlined, "Expenses"),
-                const SizedBox(width: 60), // Space for center button
-                _buildNavItem(
-                  3,
-                  Icons.insights,
-                  "Insights",
-                ), // Replaced 'AI' icon with clean chart
-                _buildNavItem(4, Icons.menu, "More"),
-              ],
-            ),
+      child: SafeArea(
+        // FIX: Removed fixed height. 
+        // Using vertical padding allows the widget to size itself naturally
+        // preventing the "1 pixel overflow" error.
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildNavItem(0, Icons.home_rounded, Icons.home_outlined, "Home"),
+              _buildNavItem(1, Icons.groups_rounded, Icons.groups_outlined, "Team"),
+              _buildNavItem(2, Icons.receipt_long_rounded, Icons.receipt_long_outlined, "Expenses"),
+              _buildNavItem(3, Icons.insights_rounded, Icons.insights_outlined, "AI"),
+              _buildNavItem(4, Icons.settings_rounded, Icons.settings_outlined, "Settings"),
+            ],
           ),
-          Positioned(
-            bottom: 25,
-            child: GestureDetector(
-              onTap: () => onTabSelected(2),
-              child: Container(
-                height: 60,
-                width: 60,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: selectedIndex == 2
-                      ? const LinearGradient(
-                          colors: [Color(0xFF444444), Color(0xFF111111)],
-                        )
-                      : const LinearGradient(
-                          colors: [Color(0xFF2C2C2C), Color(0xFF000000)],
-                        ),
-                  border: Border.all(color: Colors.white12, width: 1),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.white.withOpacity(0.05),
-                      blurRadius: 15,
-                      spreadRadius: 1,
-                    ),
-                  ],
-                ),
-                child: Center(
-                  child: Icon(
-                    Icons.groups_outlined, // Team Icon
-                    color: selectedIndex == 2 ? Colors.white : Colors.white70,
-                    size: 24,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _buildNavItem(int index, IconData icon, String label) {
+  Widget _buildNavItem(
+    int index,
+    IconData activeIcon,
+    IconData inactiveIcon,
+    String label,
+  ) {
     bool isSelected = selectedIndex == index;
-    return GestureDetector(
-      onTap: () => onTabSelected(index),
-      child: Container(
-        color: Colors.transparent,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => onTabSelected(index),
+        behavior: HitTestBehavior.opaque,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.min, // Ensures it only takes needed space
           children: [
-            Icon(
-              icon,
-              color: isSelected ? Colors.white : Colors.white24,
-              size: 24,
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              decoration: BoxDecoration(
+                color: isSelected ? const Color(0xFF222222) : Colors.transparent,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Icon(
+                isSelected ? activeIcon : inactiveIcon,
+                color: isSelected ? Colors.white : const Color(0xFF666666),
+                size: 24, // Slightly adjusted for better fit
+              ),
             ),
             const SizedBox(height: 4),
             Text(
               label,
-              style: TextStyle(
-                color: isSelected ? Colors.white : Colors.white24,
-                fontSize: 9,
-                fontWeight: FontWeight.w600,
+              maxLines: 1,
+              style: GoogleFonts.inter(
+                color: isSelected ? Colors.white : const Color(0xFF666666),
+                fontSize: 10,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                letterSpacing: 0.3,
               ),
             ),
           ],

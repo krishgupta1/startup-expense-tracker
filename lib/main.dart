@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/dashboard_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:startup_expense_tracker/features/navigation/screens/navigation_wrapper.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -17,11 +18,11 @@ class FinancialDashboardApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.dark,
         scaffoldBackgroundColor: AppTheme.background,
-        fontFamily: AppTheme.fontSans, // Default font
+        textTheme: GoogleFonts.interTextTheme(),
         useMaterial3: true,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      home: const DashboardScreen(),
+      home: const NavigationWrapper(),
     );
   }
 }
