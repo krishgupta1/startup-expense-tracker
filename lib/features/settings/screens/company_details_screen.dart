@@ -1,0 +1,410 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class CompanyDetailsScreen extends StatefulWidget {
+  const CompanyDetailsScreen({super.key});
+
+  @override
+  State<CompanyDetailsScreen> createState() => _CompanyDetailsScreenState();
+}
+
+class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
+  // 1. Controllers (Pre-filled with Mock Data)
+  late TextEditingController _companyNameController;
+  late TextEditingController _ownerNameController;
+  late TextEditingController _emailController;
+  late TextEditingController _addressController;
+  late TextEditingController _descController;
+  late TextEditingController _fundingController;
+  late TextEditingController _runwayController;
+  
+  String _selectedType = "Sole Proprietorship";
+  final List<String> _companyTypes = ["Sole Proprietorship", "Partnership", "LLP", "Pvt Ltd"];
+
+  // 2. Dynamic Data: Bank Accounts
+  final List<Map<String, TextEditingController>> _bankAccounts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _companyNameController = TextEditingController(text: "BullXchange");
+    _ownerNameController = TextEditingController(text: "Sahil Mishra");
+    _emailController = TextEditingController(text: "admin@bullxchange.com");
+    _addressController = TextEditingController(text: "123 Startup Hub, Bengaluru, India");
+    _descController = TextEditingController(text: "Paper trading platform for Indian Stock Market.");
+    _fundingController = TextEditingController(text: "482,000");
+    _runwayController = TextEditingController(text: "18");
+
+    // Add one default bank account
+    _addBankAccount("HDFC Bank", "8932749231");
+    _addBankAccount("SBI Current", "1122334455");
+  }
+
+  void _addBankAccount([String name = "", String number = ""]) {
+    setState(() {
+      _bankAccounts.add({
+        "name": TextEditingController(text: name),
+        "number": TextEditingController(text: number),
+      });
+    });
+  }
+
+  void _removeBankAccount(int index) {
+    setState(() {
+      _bankAccounts.removeAt(index);
+    });
+  }
+
+  @override
+  void dispose() {
+    _companyNameController.dispose();
+    _ownerNameController.dispose();
+    _emailController.dispose();
+    _addressController.dispose();
+    _descController.dispose();
+    _fundingController.dispose();
+    _runwayController.dispose();
+    
+    // Dispose bank account controllers
+    for (var account in _bankAccounts) {
+      account["name"]?.dispose();
+      account["number"]?.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF09090B), // Deep Matte Black
+      resizeToAvoidBottomInset: true,
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light,
+        child: SafeArea(
+          child: Column(
+            children: [
+              // 1. Header
+              _buildHeader(context),
+
+              // 2. Scrollable Form
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 32),
+
+                      // --- SECTION 1: IDENTITY ---
+                      _buildSectionLabel("IDENTITY"),
+                      _buildInputGroup("COMPANY NAME", _companyNameController),
+                      const SizedBox(height: 24),
+                      _buildInputGroup("OWNER NAME", _ownerNameController),
+                      const SizedBox(height: 24),
+                      _buildInputGroup("OFFICIAL EMAIL", _emailController),
+                      
+                      const SizedBox(height: 40),
+
+                      // --- SECTION 2: LEGAL & LOCATION ---
+                      _buildSectionLabel("LEGAL & LOCATION"),
+                      _buildDropdownGroup("COMPANY TYPE", _selectedType),
+                      const SizedBox(height: 24),
+                      _buildInputGroup("DESCRIPTION", _descController, maxLines: 3),
+                      const SizedBox(height: 24),
+                      _buildInputGroup("REGISTERED ADDRESS", _addressController, maxLines: 2),
+
+                      const SizedBox(height: 40),
+
+                      // --- SECTION 3: FINANCIALS ---
+                      _buildSectionLabel("FINANCIAL OVERVIEW"),
+                      Row(
+                        children: [
+                          Expanded(child: _buildInputGroup("FUNDS LEFT (₹)", _fundingController, isNumber: true)),
+                          const SizedBox(width: 16),
+                          Expanded(child: _buildInputGroup("RUNWAY (MO)", _runwayController, isNumber: true)),
+                        ],
+                      ),
+
+                      const SizedBox(height: 40),
+
+                      // --- SECTION 4: BANKING (Dynamic) ---
+                      _buildBankSection(),
+
+                      const SizedBox(height: 100), // Bottom padding
+                    ],
+                  ),
+                ),
+              ),
+
+              // 3. Save Button
+              _buildSaveButton(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // --- WIDGET BUILDERS ---
+
+  Widget _buildHeader(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xFF141416),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: Colors.white.withOpacity(0.04)),
+              ),
+              child: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
+            ),
+          ),
+          Text(
+            "Company Details",
+            style: GoogleFonts.inter(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          // Spacer for balance
+          const SizedBox(width: 44),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionLabel(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Text(
+        text,
+        style: GoogleFonts.inter(
+          color: Colors.white24,
+          fontSize: 10,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 1.5,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInputGroup(String label, TextEditingController controller, {int maxLines = 1, bool isNumber = false}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.inter(
+            color: Colors.white38,
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          decoration: BoxDecoration(
+            color: const Color(0xFF141416),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.white.withOpacity(0.04)),
+          ),
+          child: TextField(
+            controller: controller,
+            keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+            maxLines: maxLines,
+            style: GoogleFonts.inter(
+              color: Colors.white,
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+            ),
+            cursorColor: Colors.white,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.symmetric(vertical: 14),
+              isDense: true,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDropdownGroup(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.inter(
+            color: Colors.white38,
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF141416),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.white.withOpacity(0.04)),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              value: value,
+              isExpanded: true,
+              dropdownColor: const Color(0xFF1E1E20),
+              icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white38),
+              style: GoogleFonts.inter(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),
+              items: _companyTypes.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+              onChanged: (val) => setState(() => _selectedType = val!),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBankSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildSectionLabel("LINKED BANK ACCOUNTS"),
+            GestureDetector(
+              onTap: () => _addBankAccount(),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.add, color: Colors.white, size: 16),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        
+        if (_bankAccounts.isEmpty)
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                "No accounts added",
+                style: GoogleFonts.inter(color: Colors.white24, fontSize: 13),
+              ),
+            ),
+          ),
+
+        ...List.generate(_bankAccounts.length, (index) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xFF141416),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.white.withOpacity(0.04)),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.account_balance, color: Colors.white38, size: 20),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: _bankAccounts[index]["name"],
+                          style: GoogleFonts.inter(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
+                          decoration: InputDecoration(
+                            hintText: "Bank Name",
+                            hintStyle: GoogleFonts.inter(color: Colors.white24),
+                            border: InputBorder.none,
+                            isDense: true,
+                            contentPadding: EdgeInsets.zero,
+                          ),
+                        ),
+                        Divider(color: Colors.white.withOpacity(0.05), height: 16),
+                        TextField(
+                          controller: _bankAccounts[index]["number"],
+                          keyboardType: TextInputType.number,
+                          style: GoogleFonts.inter(color: Colors.white70, fontSize: 13),
+                          decoration: InputDecoration(
+                            hintText: "Account Number",
+                            hintStyle: GoogleFonts.inter(color: Colors.white24),
+                            border: InputBorder.none,
+                            isDense: true,
+                            contentPadding: EdgeInsets.zero,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  GestureDetector(
+                    onTap: () => _removeBankAccount(index),
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFF453A).withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.delete_outline, color: Color(0xFFFF453A), size: 18),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }),
+      ],
+    );
+  }
+
+  Widget _buildSaveButton() {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: const Color(0xFF09090B),
+        border: Border(top: BorderSide(color: Colors.white.withOpacity(0.05))),
+      ),
+      child: SizedBox(
+        width: double.infinity,
+        height: 56,
+        child: ElevatedButton(
+          onPressed: () {
+            // Save logic here
+            Navigator.pop(context);
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white, // High Contrast White
+            foregroundColor: Colors.black, // Black Text
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+          child: Text(
+            "Save Changes",
+            style: GoogleFonts.inter(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

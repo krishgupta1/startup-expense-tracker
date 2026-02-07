@@ -1,0 +1,345 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'login.dart';
+import '../../company-setup/screen/company_setup_screen.dart';
+
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  bool _isPasswordVisible = false;
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF09090B), // Deep Matte Black
+      resizeToAvoidBottomInset: true,
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light,
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 1. Spacer
+                  const SizedBox(height: 40),
+
+                  // 2. Header
+                  _buildHeader(),
+
+                  const SizedBox(height: 40),
+
+                  // 3. Sign Up Form
+                  // Full Name
+                  _buildLabel("FULL NAME"),
+                  const SizedBox(height: 8),
+                  _buildInputField(
+                    controller: _nameController,
+                    hint: "e.g. Sarah Miller",
+                    icon: Icons.person_outline,
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Email
+                  _buildLabel("EMAIL ADDRESS"),
+                  const SizedBox(height: 8),
+                  _buildInputField(
+                    controller: _emailController,
+                    hint: "name@company.com",
+                    icon: Icons.email_outlined,
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Password
+                  _buildLabel("PASSWORD"),
+                  const SizedBox(height: 8),
+                  _buildPasswordField(),
+
+                  const SizedBox(height: 40),
+
+                  // 4. Sign Up Button
+                  _buildSignUpButton(),
+
+                  const SizedBox(height: 40),
+
+                  // 5. Divider
+                  _buildDivider(),
+
+                  const SizedBox(height: 32),
+
+                  // 6. Google Sign Up (Single Button)
+                  _buildGoogleButton(),
+
+                  const SizedBox(height: 40),
+
+                  // 7. Login Footer
+                  _buildFooter(),
+                  const SizedBox(height: 24),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // --- WIDGET BUILDERS ---
+
+  Widget _buildHeader() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Back Button
+        GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFF141416),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: Colors.white.withOpacity(0.04)),
+            ),
+            child: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
+          ),
+        ),
+        const SizedBox(height: 32),
+        Text(
+          "Create Account",
+          style: GoogleFonts.inter(
+            color: Colors.white,
+            fontSize: 32,
+            fontWeight: FontWeight.w600,
+            letterSpacing: -1,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          "Join us to manage your startup finances.",
+          style: GoogleFonts.inter(
+            color: Colors.white38,
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLabel(String text) {
+    return Text(
+      text,
+      style: GoogleFonts.inter(
+        color: Colors.white24,
+        fontSize: 10,
+        fontWeight: FontWeight.bold,
+        letterSpacing: 1.5,
+      ),
+    );
+  }
+
+  Widget _buildInputField({
+    required TextEditingController controller,
+    required String hint,
+    required IconData icon,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      decoration: BoxDecoration(
+        color: const Color(0xFF141416),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white.withOpacity(0.04)),
+      ),
+      child: TextField(
+        controller: controller,
+        style: GoogleFonts.inter(color: Colors.white, fontSize: 15),
+        cursorColor: Colors.white,
+        decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: GoogleFonts.inter(color: Colors.white12),
+          icon: Icon(icon, color: Colors.white38, size: 20),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(vertical: 16),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPasswordField() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      decoration: BoxDecoration(
+        color: const Color(0xFF141416),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white.withOpacity(0.04)),
+      ),
+      child: TextField(
+        controller: _passwordController,
+        obscureText: !_isPasswordVisible,
+        style: GoogleFonts.inter(color: Colors.white, fontSize: 15),
+        cursorColor: Colors.white,
+        decoration: InputDecoration(
+          hintText: "Create a password",
+          hintStyle: GoogleFonts.inter(color: Colors.white12),
+          icon: const Icon(Icons.lock_outline, color: Colors.white38, size: 20),
+          suffixIcon: IconButton(
+            icon: Icon(
+              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+              color: Colors.white38,
+              size: 20,
+            ),
+            onPressed: () {
+              setState(() {
+                _isPasswordVisible = !_isPasswordVisible;
+              });
+            },
+          ),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(vertical: 16),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSignUpButton() {
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
+      child: ElevatedButton(
+        onPressed: () {
+          // Perform Sign Up Logic
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const CompanySetupScreen()),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+        child: Text(
+          "Sign Up",
+          style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDivider() {
+    return Row(
+      children: [
+        Expanded(child: Divider(color: Colors.white.withOpacity(0.04))),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            "Or",
+            style: GoogleFonts.inter(
+              color: Colors.white24,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        Expanded(child: Divider(color: Colors.white.withOpacity(0.04))),
+      ],
+    );
+  }
+
+  // --- CHANGED: Google Button with Logo ---
+  Widget _buildGoogleButton() {
+    return Container(
+      width: double.infinity,
+      height: 56,
+      decoration: BoxDecoration(
+        color: const Color(0xFF141416),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white.withOpacity(0.04)),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            // Perform Google Sign Up Logic
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const CompanySetupScreen(),
+              ),
+            );
+          },
+          borderRadius: BorderRadius.circular(16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Google Logo Image
+              Image.network(
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png",
+                height: 24,
+                width: 24,
+                // Fallback icon in case of offline/error
+                errorBuilder: (context, error, stackTrace) => const Icon(
+                  Icons.g_mobiledata,
+                  color: Colors.white,
+                  size: 28,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                "Sign up with Google",
+                style: GoogleFonts.inter(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFooter() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "Already have an account? ",
+          style: GoogleFonts.inter(color: Colors.white38, fontSize: 14),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+            );
+          },
+          child: Text(
+            "Login",
+            style: GoogleFonts.inter(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
