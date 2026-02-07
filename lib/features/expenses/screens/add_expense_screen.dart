@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 class AddExpenseScreen extends StatefulWidget {
   const AddExpenseScreen({super.key});
@@ -10,22 +11,25 @@ class AddExpenseScreen extends StatefulWidget {
 }
 
 class _AddExpenseScreenState extends State<AddExpenseScreen> {
-  // 1. STATE VARIABLES
-  String _selectedCategory = "Marketing";
-  String _selectedType = "One-time";
-  DateTime _selectedDate = DateTime.now();
-
   // 2. DATA LISTS
-  final List<String> _categories = [
-    "Marketing",
-    "Infrastructure",
-    "Office",
-    "Software",
-    "Transport",
-    "Design",
-  ];
+  final categories = {
+    'marketing': 'Marketing',
+    'infrastructure': 'Infrastructure',
+    'office': 'Office',
+    'software': 'Software',
+    'transport': 'Transport',
+    'design': 'Design',
+  };
 
-  final List<String> _types = ["One-time", "Recurring", "Subscription"];
+  final types = {
+    'one_time': 'One-time',
+    'recurring': 'Recurring',
+    'subscription': 'Subscription',
+  };
+
+  String _selectedCategory = "marketing";
+  String _selectedType = "one_time";
+  DateTime _selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -79,14 +83,14 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
                       const SizedBox(height: 24),
 
-                      // --- IMPROVED DROPDOWNS ROW ---
+                      // --- IMPROVED SELECTS ROW ---
                       Row(
                         children: [
                           Expanded(
-                            child: _buildDropdownField(
+                            child: _buildSelectField(
                               label: "Category",
                               currentValue: _selectedCategory,
-                              items: _categories,
+                              items: categories,
                               icon: Icons.pie_chart_outline,
                               onChanged: (val) {
                                 setState(() => _selectedCategory = val!);
@@ -95,10 +99,10 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                           ),
                           const SizedBox(width: 16),
                           Expanded(
-                            child: _buildDropdownField(
+                            child: _buildSelectField(
                               label: "Type",
                               currentValue: _selectedType,
-                              items: _types,
+                              items: types,
                               icon: Icons.repeat,
                               onChanged: (val) {
                                 setState(() => _selectedType = val!);
@@ -236,11 +240,11 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     );
   }
 
-  // --- NEW: COOL & NON-OVERLAPPING DROPDOWN ---
-  Widget _buildDropdownField({
+  // --- NEW: SHADCN SELECT FIELD ---
+  Widget _buildSelectField({
     required String label,
     required String currentValue,
-    required List<String> items,
+    required Map<String, String> items,
     required IconData icon,
     required Function(String?) onChanged,
   }) {
@@ -249,46 +253,27 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
       children: [
         _buildSectionLabel(label),
         const SizedBox(height: 8),
-        Container(
-          height: 56,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            color: const Color(0xFF141416),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
-          ),
-          child: Transform.translate(
-            offset: const Offset(0, 0),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                value: currentValue,
-                // Background color for the popup menu
-                dropdownColor: const Color(0xFF1E1E20),
-                borderRadius: BorderRadius.circular(16),
-                icon: const Icon(
-                  Icons.keyboard_arrow_down,
-                  color: Colors.white38,
-                  size: 18,
-                ),
-                style: GoogleFonts.inter(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-                isExpanded: true,
-                items: items.map((String item) {
-                  return DropdownMenuItem<String>(
-                    value: item,
-                    child: Container(
-                      // Optional: Highlight logic could go here
-                      alignment: Alignment.centerLeft,
-                      child: Text(item),
-                    ),
-                  );
-                }).toList(),
-                onChanged: onChanged,
+        ConstrainedBox(
+          constraints: const BoxConstraints(minWidth: double.infinity),
+          child: ShadSelect<String>(
+            placeholder: Text(
+              'Select $label',
+              style: GoogleFonts.inter(color: Colors.white24, fontSize: 14),
+            ),
+            options: [
+              ...items.entries.map(
+                (e) => ShadOption(value: e.key, child: Text(e.value)),
+              ),
+            ],
+            selectedOptionBuilder: (context, value) => Text(
+              items[value]!,
+              style: GoogleFonts.inter(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
               ),
             ),
+            onChanged: onChanged,
           ),
         ),
       ],
@@ -299,104 +284,123 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionLabel("Date"),
-        const SizedBox(height: 8),
-        GestureDetector(
-          onTap: () => _selectDate(),
-          child: Container(
-            height: 56,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: const Color(0xFF141416),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white.withOpacity(0.04)),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          decoration: BoxDecoration(
+            color: const Color(0xFF141416),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.white.withOpacity(0.04)),
+          ),
+          child: TextField(
+            readOnly: true,
+            style: GoogleFonts.inter(color: Colors.white, fontSize: 15),
+            decoration: InputDecoration(
+              icon: const Icon(
+                Icons.calendar_today,
+                color: Colors.white38,
+                size: 20,
+              ),
+              hintText: "Select date",
+              labelText: "Date",
+              labelStyle: GoogleFonts.inter(
+                color: Colors.white38,
+                fontSize: 13,
+              ),
+              hintStyle: GoogleFonts.inter(color: Colors.white12),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 14),
+              floatingLabelBehavior: FloatingLabelBehavior.auto,
+              suffixIcon: const Icon(
+                Icons.calendar_month,
+                color: Colors.white38,
+              ),
             ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.calendar_today_rounded,
-                  color: Colors.white38,
-                  size: 18,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    _formatDate(_selectedDate),
-                    style: GoogleFonts.inter(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                const Icon(
-                  Icons.keyboard_arrow_down,
-                  color: Colors.white38,
-                  size: 18,
-                ),
-              ],
+            controller: TextEditingController(
+              text:
+                  "${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}",
             ),
+            onTap: () {
+              _showShadCalendar();
+            },
           ),
         ),
       ],
     );
   }
 
-  Future<void> _selectDate() async {
-    final DateTime? picked = await showDatePicker(
+  void _showShadCalendar() {
+    showDialog(
       context: context,
-      initialDate: _selectedDate,
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2030),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.dark(
-              primary: Color(0xFF30D158),
-              onPrimary: Colors.black,
-              surface: Color(0xFF1E1E20),
-              onSurface: Colors.white,
-            ), dialogTheme: DialogThemeData(backgroundColor: const Color(0xFF09090B)),
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: const Color(0xFF09090B),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
           ),
-          child: child!,
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Select Date",
+                      style: GoogleFonts.inter(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.close, color: Colors.white38),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                ShadCalendar(
+                  selected: _selectedDate,
+                  fromMonth: DateTime(_selectedDate.year - 1),
+                  toMonth: DateTime(_selectedDate.year + 1, 12),
+                  onChanged: (DateTime? date) {
+                    if (date != null) {
+                      setState(() {
+                        _selectedDate = date;
+                      });
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      "Done",
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
-    if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-      });
-    }
-  }
-
-  String _formatDate(DateTime date) {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final selectedDay = DateTime(date.year, date.month, date.day);
-
-    if (selectedDay == today) {
-      return "Today, ${_formatMonthDay(date)}";
-    } else {
-      return _formatMonthDay(date);
-    }
-  }
-
-  String _formatMonthDay(DateTime date) {
-    final months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    return "${months[date.month - 1]} ${date.day}, ${date.year}";
   }
 
   Widget _buildTextArea(String label) {

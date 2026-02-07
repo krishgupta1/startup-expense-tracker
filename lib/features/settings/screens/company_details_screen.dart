@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 class CompanyDetailsScreen extends StatefulWidget {
   const CompanyDetailsScreen({super.key});
@@ -18,9 +19,15 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
   late TextEditingController _descController;
   late TextEditingController _fundingController;
   late TextEditingController _runwayController;
-  
-  String _selectedType = "Sole Proprietorship";
-  final List<String> _companyTypes = ["Sole Proprietorship", "Partnership", "LLP", "Pvt Ltd"];
+
+  final companyTypes = {
+    'sole_proprietorship': 'Sole Proprietorship',
+    'partnership': 'Partnership',
+    'llp': 'LLP',
+    'pvt_ltd': 'Pvt Ltd',
+  };
+
+  String _selectedType = "sole_proprietorship";
 
   // 2. Dynamic Data: Bank Accounts
   final List<Map<String, TextEditingController>> _bankAccounts = [];
@@ -31,8 +38,12 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
     _companyNameController = TextEditingController(text: "BullXchange");
     _ownerNameController = TextEditingController(text: "Sahil Mishra");
     _emailController = TextEditingController(text: "admin@bullxchange.com");
-    _addressController = TextEditingController(text: "123 Startup Hub, Bengaluru, India");
-    _descController = TextEditingController(text: "Paper trading platform for Indian Stock Market.");
+    _addressController = TextEditingController(
+      text: "123 Startup Hub, Bengaluru, India",
+    );
+    _descController = TextEditingController(
+      text: "Paper trading platform for Indian Stock Market.",
+    );
     _fundingController = TextEditingController(text: "482,000");
     _runwayController = TextEditingController(text: "18");
 
@@ -65,7 +76,7 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
     _descController.dispose();
     _fundingController.dispose();
     _runwayController.dispose();
-    
+
     // Dispose bank account controllers
     for (var account in _bankAccounts) {
       account["name"]?.dispose();
@@ -104,16 +115,24 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
                       _buildInputGroup("OWNER NAME", _ownerNameController),
                       const SizedBox(height: 24),
                       _buildInputGroup("OFFICIAL EMAIL", _emailController),
-                      
+
                       const SizedBox(height: 40),
 
                       // --- SECTION 2: LEGAL & LOCATION ---
                       _buildSectionLabel("LEGAL & LOCATION"),
                       _buildDropdownGroup("COMPANY TYPE", _selectedType),
                       const SizedBox(height: 24),
-                      _buildInputGroup("DESCRIPTION", _descController, maxLines: 3),
+                      _buildInputGroup(
+                        "DESCRIPTION",
+                        _descController,
+                        maxLines: 3,
+                      ),
                       const SizedBox(height: 24),
-                      _buildInputGroup("REGISTERED ADDRESS", _addressController, maxLines: 2),
+                      _buildInputGroup(
+                        "REGISTERED ADDRESS",
+                        _addressController,
+                        maxLines: 2,
+                      ),
 
                       const SizedBox(height: 40),
 
@@ -121,9 +140,21 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
                       _buildSectionLabel("FINANCIAL OVERVIEW"),
                       Row(
                         children: [
-                          Expanded(child: _buildInputGroup("FUNDS LEFT (₹)", _fundingController, isNumber: true)),
+                          Expanded(
+                            child: _buildInputGroup(
+                              "FUNDS LEFT (₹)",
+                              _fundingController,
+                              isNumber: true,
+                            ),
+                          ),
                           const SizedBox(width: 16),
-                          Expanded(child: _buildInputGroup("RUNWAY (MO)", _runwayController, isNumber: true)),
+                          Expanded(
+                            child: _buildInputGroup(
+                              "RUNWAY (MO)",
+                              _runwayController,
+                              isNumber: true,
+                            ),
+                          ),
                         ],
                       ),
 
@@ -164,7 +195,11 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(color: Colors.white.withOpacity(0.04)),
               ),
-              child: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
+              child: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+                size: 20,
+              ),
             ),
           ),
           Text(
@@ -197,7 +232,12 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
     );
   }
 
-  Widget _buildInputGroup(String label, TextEditingController controller, {int maxLines = 1, bool isNumber = false}) {
+  Widget _buildInputGroup(
+    String label,
+    TextEditingController controller, {
+    int maxLines = 1,
+    bool isNumber = false,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -251,23 +291,27 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
           ),
         ),
         const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            color: const Color(0xFF141416),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
-          ),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              value: value,
-              isExpanded: true,
-              dropdownColor: const Color(0xFF1E1E20),
-              icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white38),
-              style: GoogleFonts.inter(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),
-              items: _companyTypes.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-              onChanged: (val) => setState(() => _selectedType = val!),
+        ConstrainedBox(
+          constraints: const BoxConstraints(minWidth: double.infinity),
+          child: ShadSelect<String>(
+            placeholder: Text(
+              'Select $label',
+              style: GoogleFonts.inter(color: Colors.white24, fontSize: 15),
             ),
+            options: [
+              ...companyTypes.entries.map(
+                (e) => ShadOption(value: e.key, child: Text(e.value)),
+              ),
+            ],
+            selectedOptionBuilder: (context, selectedValue) => Text(
+              companyTypes[selectedValue]!,
+              style: GoogleFonts.inter(
+                color: Colors.white,
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            onChanged: (val) => setState(() => _selectedType = val!),
           ),
         ),
       ],
@@ -296,7 +340,7 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
           ],
         ),
         const SizedBox(height: 8),
-        
+
         if (_bankAccounts.isEmpty)
           Center(
             child: Padding(
@@ -320,14 +364,22 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.account_balance, color: Colors.white38, size: 20),
+                  const Icon(
+                    Icons.account_balance,
+                    color: Colors.white38,
+                    size: 20,
+                  ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       children: [
                         TextField(
                           controller: _bankAccounts[index]["name"],
-                          style: GoogleFonts.inter(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
+                          style: GoogleFonts.inter(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
                           decoration: InputDecoration(
                             hintText: "Bank Name",
                             hintStyle: GoogleFonts.inter(color: Colors.white24),
@@ -336,11 +388,17 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
                             contentPadding: EdgeInsets.zero,
                           ),
                         ),
-                        Divider(color: Colors.white.withOpacity(0.05), height: 16),
+                        Divider(
+                          color: Colors.white.withOpacity(0.05),
+                          height: 16,
+                        ),
                         TextField(
                           controller: _bankAccounts[index]["number"],
                           keyboardType: TextInputType.number,
-                          style: GoogleFonts.inter(color: Colors.white70, fontSize: 13),
+                          style: GoogleFonts.inter(
+                            color: Colors.white70,
+                            fontSize: 13,
+                          ),
                           decoration: InputDecoration(
                             hintText: "Account Number",
                             hintStyle: GoogleFonts.inter(color: Colors.white24),
@@ -361,7 +419,11 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
                         color: const Color(0xFFFF453A).withOpacity(0.1),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.delete_outline, color: Color(0xFFFF453A), size: 18),
+                      child: const Icon(
+                        Icons.delete_outline,
+                        color: Color(0xFFFF453A),
+                        size: 18,
+                      ),
                     ),
                   ),
                 ],
@@ -398,10 +460,7 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
           ),
           child: Text(
             "Save Changes",
-            style: GoogleFonts.inter(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-            ),
+            style: GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.bold),
           ),
         ),
       ),

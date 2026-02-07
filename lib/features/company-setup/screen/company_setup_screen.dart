@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:startup_expense_tracker/features/navigation/screens/navigation_wrapper.dart';
 
 class CompanySetupScreen extends StatefulWidget {
@@ -23,12 +24,18 @@ class _CompanySetupScreenState extends State<CompanySetupScreen> {
   // Step 1: Identity
   final TextEditingController _ownerNameController = TextEditingController();
   final TextEditingController _companyNameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
 
   // Step 2: Legal & Loc
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _workDescController = TextEditingController();
-  String _companyType = "Sole Proprietorship";
+  String _companyType = "sole_proprietorship";
+
+  final companyTypes = {
+    'sole_proprietorship': 'Sole Proprietorship',
+    'partnership': 'Partnership',
+    'llp': 'LLP',
+    'pvt_ltd': 'Pvt Ltd',
+  };
 
   // Step 3: Financials
   final TextEditingController _fundingController = TextEditingController();
@@ -133,9 +140,6 @@ class _CompanySetupScreenState extends State<CompanySetupScreen> {
         const SizedBox(height: 32),
         _buildLabel("COMPANY NAME"),
         _buildInputField(_companyNameController, "Startup Name"),
-        const SizedBox(height: 32),
-        _buildLabel("OFFICIAL EMAIL"),
-        _buildInputField(_emailController, "admin@company.com"),
       ],
     );
   }
@@ -146,10 +150,24 @@ class _CompanySetupScreenState extends State<CompanySetupScreen> {
       subtitle: "Legal details and location.",
       children: [
         _buildLabel("COMPANY TYPE"),
-        _buildDropdown(
-          ["Sole Proprietorship", "Partnership", "LLP", "Pvt Ltd"],
-          _companyType,
-          (val) => setState(() => _companyType = val!),
+        ConstrainedBox(
+          constraints: const BoxConstraints(minWidth: double.infinity),
+          child: ShadSelect<String>(
+            placeholder: Text(
+              'Select company type',
+              style: GoogleFonts.inter(color: Colors.white24, fontSize: 16),
+            ),
+            options: [
+              ...companyTypes.entries.map(
+                (e) => ShadOption(value: e.key, child: Text(e.value)),
+              ),
+            ],
+            selectedOptionBuilder: (context, value) => Text(
+              companyTypes[value]!,
+              style: GoogleFonts.inter(color: Colors.white, fontSize: 16),
+            ),
+            onChanged: (val) => setState(() => _companyType = val!),
+          ),
         ),
         const SizedBox(height: 32),
         _buildLabel("WHAT IS THE WORK?"),
@@ -634,22 +652,22 @@ class _CompanySetupScreenState extends State<CompanySetupScreen> {
     bool isNumber = false,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
-        color: const Color(0xFF141416),
+        color: Colors.black,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.04)),
+        border: Border.all(color: Colors.white.withOpacity(0.1)),
       ),
       child: TextField(
         controller: controller,
         keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-        style: GoogleFonts.inter(color: Colors.white, fontSize: 16),
+        style: GoogleFonts.inter(color: Colors.white, fontSize: 15),
         cursorColor: Colors.white,
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: GoogleFonts.inter(color: Colors.white24),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 16),
+          contentPadding: const EdgeInsets.symmetric(vertical: 14),
         ),
       ),
     );
@@ -657,50 +675,22 @@ class _CompanySetupScreenState extends State<CompanySetupScreen> {
 
   Widget _buildTextArea(TextEditingController controller, String hint) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
-        color: const Color(0xFF141416),
+        color: Colors.black,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.04)),
+        border: Border.all(color: Colors.white.withOpacity(0.1)),
       ),
       child: TextField(
         controller: controller,
         maxLines: 3,
-        style: GoogleFonts.inter(color: Colors.white, fontSize: 16),
+        style: GoogleFonts.inter(color: Colors.white, fontSize: 15),
         cursorColor: Colors.white,
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: GoogleFonts.inter(color: Colors.white24),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 16),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDropdown(
-    List<String> items,
-    String value,
-    Function(String?) onChanged,
-  ) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      decoration: BoxDecoration(
-        color: const Color(0xFF141416),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.04)),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: value,
-          isExpanded: true,
-          dropdownColor: const Color(0xFF1E1E20),
-          icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white38),
-          style: GoogleFonts.inter(color: Colors.white, fontSize: 16),
-          items: items
-              .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-              .toList(),
-          onChanged: onChanged,
+          contentPadding: const EdgeInsets.symmetric(vertical: 14),
         ),
       ),
     );

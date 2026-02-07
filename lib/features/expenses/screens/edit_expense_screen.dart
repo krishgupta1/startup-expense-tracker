@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 class EditExpenseScreen extends StatefulWidget {
   // In a real app, you would pass expense object here
@@ -17,15 +18,24 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
   late TextEditingController _titleController;
   late TextEditingController _notesController;
 
-  String _selectedCategory = "Infrastructure";
-  String _selectedType = "Recurring";
-  final String _selectedDate = "Nov 24, 2024";
-
   // Data Lists
-  final List<String> _categories = [
-    "Marketing", "Infrastructure", "Office", "Software", "Transport", "Design"
-  ];
-  final List<String> _types = ["One-time", "Recurring", "Subscription"];
+  final categories = {
+    'marketing': 'Marketing',
+    'infrastructure': 'Infrastructure',
+    'office': 'Office',
+    'software': 'Software',
+    'transport': 'Transport',
+    'design': 'Design',
+  };
+  final types = {
+    'one_time': 'One-time',
+    'recurring': 'Recurring',
+    'subscription': 'Subscription',
+  };
+
+  String _selectedCategory = "infrastructure";
+  String _selectedType = "recurring";
+  DateTime _selectedDate = DateTime.now();
 
   @override
   void initState() {
@@ -87,34 +97,40 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
                           ],
                         ),
                       ),
-                      
+
                       const SizedBox(height: 40),
 
                       // Expense Title
-                      _buildTextInput("Expense Title", "e.g. Client Lunch", _titleController),
+                      _buildTextInput(
+                        "Expense Title",
+                        "e.g. Client Lunch",
+                        _titleController,
+                      ),
 
                       const SizedBox(height: 24),
 
-                      // Dropdowns Row
+                      // Selects Row
                       Row(
                         children: [
                           Expanded(
-                            child: _buildDropdownField(
+                            child: _buildSelectField(
                               label: "Category",
                               currentValue: _selectedCategory,
-                              items: _categories,
+                              items: categories,
                               icon: Icons.pie_chart_outline,
-                              onChanged: (val) => setState(() => _selectedCategory = val!),
+                              onChanged: (val) =>
+                                  setState(() => _selectedCategory = val!),
                             ),
                           ),
                           const SizedBox(width: 16),
                           Expanded(
-                            child: _buildDropdownField(
+                            child: _buildSelectField(
                               label: "Type",
                               currentValue: _selectedType,
-                              items: _types,
+                              items: types,
                               icon: Icons.repeat,
-                              onChanged: (val) => setState(() => _selectedType = val!),
+                              onChanged: (val) =>
+                                  setState(() => _selectedType = val!),
                             ),
                           ),
                         ],
@@ -123,11 +139,7 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
                       const SizedBox(height: 24),
 
                       // Date (Simulated Edit)
-                      _buildStaticSelectInput(
-                        "Date",
-                        _selectedDate,
-                        Icons.calendar_today_rounded,
-                      ),
+                      _buildDateSelector(),
 
                       const SizedBox(height: 24),
 
@@ -226,7 +238,11 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
     );
   }
 
-  Widget _buildTextInput(String label, String placeholder, TextEditingController controller) {
+  Widget _buildTextInput(
+    String label,
+    String placeholder,
+    TextEditingController controller,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -254,10 +270,10 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
     );
   }
 
-  Widget _buildDropdownField({
+  Widget _buildSelectField({
     required String label,
     required String currentValue,
-    required List<String> items,
+    required Map<String, String> items,
     required IconData icon,
     required Function(String?) onChanged,
   }) {
@@ -266,73 +282,27 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
       children: [
         _buildSectionLabel(label),
         const SizedBox(height: 8),
-        Container(
-          height: 56,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            color: const Color(0xFF141416),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
-          ),
-          child: Transform.translate(
-            offset: const Offset(0, 0),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                value: currentValue,
-                icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white38, size: 18),
-                dropdownColor: const Color(0xFF1E1E20),
-                borderRadius: BorderRadius.circular(16),
-                style: GoogleFonts.inter(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-                isExpanded: true,
-                items: items.map((String item) {
-                  return DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(item),
-                  );
-                }).toList(),
-                onChanged: onChanged,
+        ConstrainedBox(
+          constraints: const BoxConstraints(minWidth: double.infinity),
+          child: ShadSelect<String>(
+            placeholder: Text(
+              'Select $label',
+              style: GoogleFonts.inter(color: Colors.white24, fontSize: 14),
+            ),
+            options: [
+              ...items.entries.map(
+                (e) => ShadOption(value: e.key, child: Text(e.value)),
+              ),
+            ],
+            selectedOptionBuilder: (context, value) => Text(
+              items[value]!,
+              style: GoogleFonts.inter(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
               ),
             ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStaticSelectInput(String label, String value, IconData icon) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildSectionLabel(label),
-        const SizedBox(height: 8),
-        Container(
-          height: 56,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            color: const Color(0xFF141416),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
-          ),
-          child: Row(
-            children: [
-              Icon(icon, color: Colors.white38, size: 18),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  value,
-                  style: GoogleFonts.inter(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              const Icon(Icons.keyboard_arrow_down, color: Colors.white38, size: 18),
-            ],
+            onChanged: onChanged,
           ),
         ),
       ],
@@ -400,12 +370,12 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
       height: 48,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: isSelected 
-            ? Border.all(color: Colors.white, width: 2) 
+        border: isSelected
+            ? Border.all(color: Colors.white, width: 2)
             : Border.all(color: Colors.transparent),
         image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover),
       ),
-      child: isSelected 
+      child: isSelected
           ? Container(
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.5),
@@ -424,9 +394,7 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF141416),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.04),
-        ),
+        border: Border.all(color: Colors.white.withOpacity(0.04)),
       ),
       child: Row(
         children: [
@@ -461,7 +429,7 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
           IconButton(
             icon: const Icon(Icons.close, color: Colors.white38, size: 20),
             onPressed: () {},
-          )
+          ),
         ],
       ),
     );
@@ -476,6 +444,129 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
         fontWeight: FontWeight.bold,
         letterSpacing: 1.5,
       ),
+    );
+  }
+
+  Widget _buildDateSelector() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          decoration: BoxDecoration(
+            color: const Color(0xFF141416),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.white.withOpacity(0.04)),
+          ),
+          child: TextField(
+            readOnly: true,
+            style: GoogleFonts.inter(color: Colors.white, fontSize: 15),
+            decoration: InputDecoration(
+              icon: const Icon(
+                Icons.calendar_today,
+                color: Colors.white38,
+                size: 20,
+              ),
+              hintText: "Select date",
+              labelText: "Date",
+              labelStyle: GoogleFonts.inter(
+                color: Colors.white38,
+                fontSize: 13,
+              ),
+              hintStyle: GoogleFonts.inter(color: Colors.white12),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(vertical: 14),
+              floatingLabelBehavior: FloatingLabelBehavior.auto,
+              suffixIcon: const Icon(
+                Icons.calendar_month,
+                color: Colors.white38,
+              ),
+            ),
+            controller: TextEditingController(
+              text:
+                  "${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}",
+            ),
+            onTap: () {
+              _showShadCalendar();
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showShadCalendar() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: const Color(0xFF09090B),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Select Date",
+                      style: GoogleFonts.inter(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.close, color: Colors.white38),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                ShadCalendar(
+                  selected: _selectedDate,
+                  fromMonth: DateTime(_selectedDate.year, 1),
+                  toMonth: DateTime(_selectedDate.year, 12),
+                  onChanged: (DateTime? date) {
+                    if (date != null) {
+                      setState(() {
+                        _selectedDate = date;
+                      });
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      "Done",
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -501,10 +592,7 @@ class _EditExpenseScreenState extends State<EditExpenseScreen> {
           ),
           child: Text(
             "Update Expense",
-            style: GoogleFonts.inter(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-            ),
+            style: GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.bold),
           ),
         ),
       ),

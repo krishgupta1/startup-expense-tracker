@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'expense_details_screen.dart';
 
 class SearchExpenseScreen extends StatefulWidget {
@@ -15,36 +16,35 @@ class _SearchExpenseScreenState extends State<SearchExpenseScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = "";
 
-  String _selectedYear = "2024";
-  String _selectedMonth = "Nov"; // Default to current month
-  String _selectedCategory = "All";
-
   // 2. FILTER OPTIONS
-  final List<String> _years = ["2024", "2023", "2022"];
-  final List<String> _months = [
-    "All",
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-  final List<String> _categories = [
-    "All",
-    "Infrastructure",
-    "Software",
-    "Office",
-    "Marketing",
-    "Transport",
-    "Meals",
-  ];
+  final years = {'2024': '2024', '2023': '2023', '2022': '2022'};
+  final months = {
+    'all': 'All',
+    'jan': 'Jan',
+    'feb': 'Feb',
+    'mar': 'Mar',
+    'apr': 'Apr',
+    'may': 'May',
+    'jun': 'Jun',
+    'jul': 'Jul',
+    'aug': 'Aug',
+    'sep': 'Sep',
+    'oct': 'Oct',
+    'nov': 'Nov',
+    'dec': 'Dec',
+  };
+  final categories = {
+    'all': 'All',
+    'infrastructure': 'Infrastructure',
+    'software': 'Software',
+    'office': 'Office',
+    'marketing': 'Marketing',
+    'meals': 'Meals',
+  };
+
+  String _selectedYear = "2024";
+  String _selectedMonth = "nov"; // Default to current month
+  String _selectedCategory = "all";
 
   // 3. MOCK DATA (With formatted dates)
   final List<Map<String, dynamic>> _allTransactions = [
@@ -216,17 +216,21 @@ class _SearchExpenseScreenState extends State<SearchExpenseScreen> {
                   children: [
                     // YEAR SELECTOR
                     _buildDropdownTrigger(
-                      label: "Year: $_selectedYear",
-                      onTap: () => _showBottomSheet(_years, (val) {
+                      label: "Year: ${years[_selectedYear]}",
+                      onTap: () => _showBottomSheet(years.keys.toList(), (val) {
                         setState(() => _selectedYear = val);
                       }),
                     ),
                     const SizedBox(width: 12),
 
                     // MONTH SELECTOR
-                    _buildHorizontalSelector(_months, _selectedMonth, (val) {
-                      setState(() => _selectedMonth = val);
-                    }),
+                    _buildHorizontalSelector(
+                      months.keys.toList(),
+                      _selectedMonth,
+                      (val) {
+                        setState(() => _selectedMonth = val);
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -239,10 +243,10 @@ class _SearchExpenseScreenState extends State<SearchExpenseScreen> {
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 24),
-                  itemCount: _categories.length,
+                  itemCount: categories.length,
                   separatorBuilder: (_, __) => const SizedBox(width: 8),
                   itemBuilder: (context, index) {
-                    final cat = _categories[index];
+                    final cat = categories.keys.toList()[index];
                     final isSelected = _selectedCategory == cat;
                     return GestureDetector(
                       onTap: () => setState(() => _selectedCategory = cat),
@@ -263,7 +267,7 @@ class _SearchExpenseScreenState extends State<SearchExpenseScreen> {
                           ),
                         ),
                         child: Text(
-                          cat,
+                          categories[cat]!,
                           style: GoogleFonts.inter(
                             color: isSelected ? Colors.black : Colors.white54,
                             fontSize: 12,
@@ -373,7 +377,7 @@ class _SearchExpenseScreenState extends State<SearchExpenseScreen> {
               ),
             ),
             child: Text(
-              item,
+              months[item]!,
               style: GoogleFonts.inter(
                 color: isSelected ? const Color(0xFF30D158) : Colors.white54,
                 fontSize: 12,

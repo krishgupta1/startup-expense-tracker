@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:startup_expense_tracker/features/auth/screen/signup.dart';
 import 'theme/app_theme.dart';
 
@@ -12,17 +13,26 @@ class FinancialDashboardApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Financial Dashboard',
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: AppTheme.background,
-        textTheme: GoogleFonts.interTextTheme(),
-        useMaterial3: true,
-        iconTheme: const IconThemeData(color: Colors.white),
+    return ShadTheme(
+      data: ShadThemeData(
+        colorScheme: ShadSlateColorScheme.dark().copyWith(
+          background: Colors.black,
+          card: Colors.black,
+          popover: const Color(0xFF1A1A1A),
+        ),
       ),
-      home: const SignUpScreen(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Financial Dashboard',
+        theme: ThemeData(
+          brightness: Brightness.dark,
+          scaffoldBackgroundColor: AppTheme.background,
+          textTheme: GoogleFonts.interTextTheme(),
+          useMaterial3: true,
+          iconTheme: const IconThemeData(color: Colors.white),
+        ),
+        home: const SignUpScreen(),
+      ),
     );
   }
 }

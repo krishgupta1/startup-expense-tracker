@@ -13,9 +13,11 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   bool _isPasswordVisible = false;
-  final TextEditingController _nameController = TextEditingController();
+  bool _isConfirmPasswordVisible = false;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,25 +34,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // 1. Spacer
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 24),
 
                   // 2. Header
                   _buildHeader(),
 
-                  const SizedBox(height: 40),
-
-                  // 3. Sign Up Form
-                  // Full Name
-                  _buildLabel("FULL NAME"),
-                  const SizedBox(height: 8),
-                  _buildInputField(
-                    controller: _nameController,
-                    hint: "e.g. Sarah Miller",
-                    icon: Icons.person_outline,
-                  ),
-
                   const SizedBox(height: 24),
 
+                  // 3. Sign Up Form
                   // Email
                   _buildLabel("EMAIL ADDRESS"),
                   const SizedBox(height: 8),
@@ -60,33 +51,40 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     icon: Icons.email_outlined,
                   ),
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
 
                   // Password
                   _buildLabel("PASSWORD"),
                   const SizedBox(height: 8),
                   _buildPasswordField(),
 
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
+
+                  // Confirm Password
+                  _buildLabel("CONFIRM PASSWORD"),
+                  const SizedBox(height: 8),
+                  _buildConfirmPasswordField(),
+
+                  const SizedBox(height: 24),
 
                   // 4. Sign Up Button
                   _buildSignUpButton(),
 
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 24),
 
                   // 5. Divider
                   _buildDivider(),
 
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 16),
 
                   // 6. Google Sign Up (Single Button)
                   _buildGoogleButton(),
 
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 16),
 
                   // 7. Login Footer
                   _buildFooter(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),
@@ -115,7 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
           ),
         ),
-        const SizedBox(height: 32),
+        const SizedBox(height: 20),
         Text(
           "Create Account",
           style: GoogleFonts.inter(
@@ -170,6 +168,44 @@ class _SignUpScreenState extends State<SignUpScreen> {
           hintText: hint,
           hintStyle: GoogleFonts.inter(color: Colors.white12),
           icon: Icon(icon, color: Colors.white38, size: 20),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(vertical: 16),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildConfirmPasswordField() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      decoration: BoxDecoration(
+        color: const Color(0xFF141416),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white.withOpacity(0.04)),
+      ),
+      child: TextField(
+        controller: _confirmPasswordController,
+        obscureText: !_isConfirmPasswordVisible,
+        style: GoogleFonts.inter(color: Colors.white, fontSize: 15),
+        cursorColor: Colors.white,
+        decoration: InputDecoration(
+          hintText: "Confirm your password",
+          hintStyle: GoogleFonts.inter(color: Colors.white12),
+          icon: const Icon(Icons.lock_outline, color: Colors.white38, size: 20),
+          suffixIcon: IconButton(
+            icon: Icon(
+              _isConfirmPasswordVisible
+                  ? Icons.visibility
+                  : Icons.visibility_off,
+              color: Colors.white38,
+              size: 20,
+            ),
+            onPressed: () {
+              setState(() {
+                _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+              });
+            },
+          ),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 16),
         ),
