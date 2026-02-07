@@ -1,0 +1,842 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class MonthlyBurnScreen extends StatelessWidget {
+  const MonthlyBurnScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF09090B),
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light,
+        child: SafeArea(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header
+                _buildHeader(context),
+
+                const SizedBox(height: 32),
+
+                // Main Burn Card
+                _buildMainBurnCard(),
+
+                const SizedBox(height: 32),
+
+                // Burn Trend Chart
+                _buildBurnTrendSection(),
+
+                const SizedBox(height: 32),
+
+                // Expense Categories
+                _buildExpenseCategoriesSection(),
+
+                const SizedBox(height: 32),
+
+                // Vendor Breakdown
+                _buildVendorBreakdownSection(),
+
+                const SizedBox(height: 32),
+
+                // Burn Optimization
+                _buildBurnOptimizationSection(),
+
+                const SizedBox(height: 32),
+
+                // Forecast Comparison
+                _buildForecastComparisonSection(),
+
+                const SizedBox(height: 40),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: const Color(0xFF141416),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.white.withOpacity(0.08)),
+            ),
+            child: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
+          ),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              "Burn Analysis",
+              style: GoogleFonts.inter(
+                color: Colors.white38,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              "Expense Breakdown",
+              style: GoogleFonts.inter(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -0.5,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMainBurnCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: const Color(0xFF141416),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.white.withOpacity(0.04)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFF9F0A).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(
+                    color: const Color(0xFFFF9F0A).withOpacity(0.3),
+                  ),
+                ),
+                child: Text(
+                  "PRIMARY INSIGHT",
+                  style: GoogleFonts.inter(
+                    color: const Color(0xFFFF9F0A),
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.0,
+                  ),
+                ),
+              ),
+              const Spacer(),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF30D158).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(
+                    color: const Color(0xFF30D158).withOpacity(0.3),
+                  ),
+                ),
+                child: Text(
+                  "HIGH IMPACT",
+                  style: GoogleFonts.inter(
+                    color: const Color(0xFF30D158),
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.0,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                "\$42.5",
+                style: GoogleFonts.inter(
+                  color: Colors.white,
+                  fontSize: 56,
+                  fontWeight: FontWeight.w300,
+                  height: 1.0,
+                  letterSpacing: -2,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  "thousand/month",
+                  style: GoogleFonts.inter(
+                    color: Colors.white38,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 32),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.03),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.white.withOpacity(0.06)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Net Burn (after revenue)",
+                  style: GoogleFonts.inter(
+                    color: Colors.white38,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  "\$34,000/month",
+                  style: GoogleFonts.inter(
+                    color: const Color(0xFFFF453A),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBurnTrendSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "6-Month Burn Trend",
+          style: GoogleFonts.inter(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.5,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: const Color(0xFF141416),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.white.withOpacity(0.04)),
+          ),
+          child: SizedBox(
+            height: 160,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                _buildFlatBar("Jan", 0.4),
+                _buildFlatBar("Feb", 0.5),
+                _buildFlatBar("Mar", 0.45),
+                _buildFlatBar("Apr", 0.6),
+                _buildFlatBar("May", 0.55),
+                _buildFlatBar("Jun", 0.8, isActive: true),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFlatBar(String label, double pct, {bool isActive = false}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Container(
+          width: 40,
+          height: 120 * pct,
+          decoration: BoxDecoration(
+            color: isActive ? Colors.white : const Color(0xFF1F1F22),
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          label,
+          style: GoogleFonts.inter(
+            color: isActive ? Colors.white : Colors.white38,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildExpenseCategoriesSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Expense Categories",
+          style: GoogleFonts.inter(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.5,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: const Color(0xFF141416),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.white.withOpacity(0.04)),
+          ),
+          child: Column(
+            children: [
+              _buildCategoryRow(
+                "Salaries",
+                "\$27,625",
+                65,
+                const Color(0xFF30D158),
+              ),
+              const SizedBox(height: 24),
+              _buildCategoryRow(
+                "Servers & Infrastructure",
+                "\$8,500",
+                20,
+                const Color(0xFF3A4B8A),
+              ),
+              const SizedBox(height: 24),
+              _buildCategoryRow(
+                "Marketing",
+                "\$4,250",
+                10,
+                const Color(0xFFFF9F0A),
+              ),
+              const SizedBox(height: 24),
+              _buildCategoryRow(
+                "Office & Operations",
+                "\$2,125",
+                5,
+                const Color(0xFF00BFA5),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCategoryRow(
+    String label,
+    String value,
+    int percentage,
+    Color color,
+  ) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 3,
+          child: Text(
+            label,
+            style: GoogleFonts.inter(
+              color: Colors.white70,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 4,
+          child: Text(
+            value,
+            style: GoogleFonts.inter(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              fontFeatures: [const FontFeature.tabularFigures()],
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Stack(
+            children: [
+              Container(
+                height: 4,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1F1F22),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              FractionallySizedBox(
+                widthFactor: percentage / 100.0,
+                child: Container(
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildVendorBreakdownSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Top Vendors",
+          style: GoogleFonts.inter(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.5,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: const Color(0xFF141416),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.white.withOpacity(0.04)),
+          ),
+          child: Column(
+            children: [
+              _buildVendorRow("AWS", "Cloud Services", "\$3,800/month"),
+              const SizedBox(height: 16),
+              _buildVendorRow(
+                "Google Workspace",
+                "Productivity",
+                "\$450/month",
+              ),
+              const SizedBox(height: 16),
+              _buildVendorRow("Slack", "Communication", "\$350/month"),
+              const SizedBox(height: 16),
+              _buildVendorRow("HubSpot", "Marketing", "\$1,200/month"),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildVendorRow(String name, String service, String cost) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: const Color(0xFF1F1F22),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Center(
+              child: Text(
+                name.substring(0, 2).toUpperCase(),
+                style: GoogleFonts.inter(
+                  color: Colors.white38,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: GoogleFonts.inter(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  service,
+                  style: GoogleFonts.inter(
+                    color: Colors.white38,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Text(
+            cost,
+            style: GoogleFonts.inter(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              fontFeatures: [const FontFeature.tabularFigures()],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBurnOptimizationSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Optimization Opportunities",
+          style: GoogleFonts.inter(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.5,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white.withOpacity(0.08)),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildOptimizationItem(
+                "AWS Reserved Instances",
+                "Save \$1,200/month by committing to 1-year plans",
+                "\$14,400/year",
+                const Color(0xFF30D158),
+              ),
+              const SizedBox(height: 16),
+              _buildOptimizationItem(
+                "Marketing ROI Review",
+                "Pause underperforming campaigns (\$800/month)",
+                "\$9,600/year",
+                const Color(0xFFFF9F0A),
+              ),
+              const SizedBox(height: 16),
+              _buildOptimizationItem(
+                "Tool Consolidation",
+                "Replace HubSpot with cheaper alternatives",
+                "\$600/month",
+                const Color(0xFF00BFA5),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildOptimizationItem(
+    String title,
+    String description,
+    String savings,
+    Color color,
+  ) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.03),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white.withOpacity(0.06)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: GoogleFonts.inter(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(color: color.withOpacity(0.3)),
+                ),
+                child: Text(
+                  savings,
+                  style: GoogleFonts.inter(
+                    color: color,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            description,
+            style: GoogleFonts.inter(
+              color: Colors.white38,
+              fontSize: 12,
+              height: 1.4,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildForecastComparisonSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Budget vs Actual",
+          style: GoogleFonts.inter(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.5,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: const Color(0xFF141416),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.white.withOpacity(0.04)),
+          ),
+          child: Column(
+            children: [
+              _buildComparisonRow(
+                "Category",
+                "Budget",
+                "Actual",
+                "Variance",
+                true,
+              ),
+              _buildComparisonRow(
+                "Salaries",
+                "\$28,000",
+                "\$27,625",
+                "\$375 under",
+                false,
+              ),
+              _buildComparisonRow(
+                "Infrastructure",
+                "\$8,000",
+                "\$8,500",
+                "\$500 over",
+                false,
+              ),
+              _buildComparisonRow(
+                "Marketing",
+                "\$5,000",
+                "\$4,250",
+                "\$750 under",
+                false,
+              ),
+              _buildComparisonRow(
+                "Operations",
+                "\$2,000",
+                "\$2,125",
+                "\$125 over",
+                false,
+              ),
+              const SizedBox(height: 16),
+              Container(height: 1, color: Colors.white.withOpacity(0.1)),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Total Budget",
+                    style: GoogleFonts.inter(
+                      color: Colors.white38,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    "\$43,000",
+                    style: GoogleFonts.inter(
+                      color: Colors.white38,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      fontFeatures: [const FontFeature.tabularFigures()],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Total Actual",
+                    style: GoogleFonts.inter(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    "\$42,500",
+                    style: GoogleFonts.inter(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      fontFeatures: [const FontFeature.tabularFigures()],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Variance",
+                    style: GoogleFonts.inter(
+                      color: Colors.white38,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    "\$500 under budget",
+                    style: GoogleFonts.inter(
+                      color: const Color(0xFF30D158),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      fontFeatures: [const FontFeature.tabularFigures()],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildComparisonRow(
+    String category,
+    String budget,
+    String actual,
+    String variance,
+    bool isHeader,
+  ) {
+    bool isOver = variance.contains("over");
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 5,
+            child: Text(
+              category,
+              style: GoogleFonts.inter(
+                color: isHeader ? Colors.white : Colors.white70,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              budget,
+              textAlign: TextAlign.end,
+              style: GoogleFonts.inter(
+                color: isHeader ? Colors.white : Colors.white38,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              actual,
+              textAlign: TextAlign.end,
+              style: GoogleFonts.inter(
+                color: isHeader ? Colors.white : Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 4,
+            child: Text(
+              isHeader
+                  ? variance
+                  : variance.replaceAll(" under", "").replaceAll(" over", ""),
+              textAlign: TextAlign.end,
+              style: GoogleFonts.inter(
+                color: isHeader
+                    ? Colors.white
+                    : isOver
+                    ? const Color(0xFFFF453A)
+                    : const Color(0xFF30D158),
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
