@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:ui'; // Required for FontFeature
 import 'package:google_fonts/google_fonts.dart';
-import '../../analysis/screens/analysis_screen.dart';
+import 'package:fl_chart/fl_chart.dart';
+
+// --- Screen Imports (Restored) ---
 import 'runway_estimation_screen.dart';
 import 'funds_overview_screen.dart';
 import 'monthly_burn_screen.dart';
@@ -33,12 +36,14 @@ class HomeScreen extends StatelessWidget {
 
                 // 2. Hero Card (Runway) - Flat Style
                 GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const RunwayEstimationScreen(),
-                    ),
-                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RunwayEstimationScreen(),
+                      ),
+                    );
+                  },
                   child: _buildFlatRunwayCard(currentHealth),
                 ),
 
@@ -49,12 +54,14 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const FundsOverviewScreen(),
-                          ),
-                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const FundsOverviewScreen(),
+                            ),
+                          );
+                        },
                         child: _buildFlatMetricCard(
                           label: "Total Funds",
                           value: "\$482k",
@@ -65,12 +72,14 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(width: 16),
                     Expanded(
                       child: GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MonthlyBurnScreen(),
-                          ),
-                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MonthlyBurnScreen(),
+                            ),
+                          );
+                        },
                         child: _buildFlatMetricCard(
                           label: "Monthly Burn",
                           value: "\$42.5k",
@@ -86,18 +95,20 @@ class HomeScreen extends StatelessWidget {
 
                 // 4. AI Insight (Flat Bordered Pill)
                 GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AIInsightScreen(),
-                    ),
-                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AIInsightScreen(),
+                      ),
+                    );
+                  },
                   child: _buildFlatAIPill(),
                 ),
 
                 const SizedBox(height: 40),
 
-                // 6. Trend Chart (Minimal Bars)
+                // 5. Trend Chart (Corrected to show Bars)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -106,20 +117,22 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-                // Glimpse Chart (Clickable)
                 GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AnalysisScreen(),
-                    ),
-                  ),
-                  child: _buildBudgetComparison(),
+                  // Drills down to Monthly Burn Screen for more detail
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MonthlyBurnScreen(),
+                      ),
+                    );
+                  },
+                  child: _buildTrendChart(),
                 ),
 
                 const SizedBox(height: 40),
 
-                // 7. Breakdown (Clean List)
+                // 6. Breakdown (Pie Chart)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -128,15 +141,17 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-                // Glimpse Breakdown (Clickable)
                 GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AnalysisScreen(),
-                    ),
-                  ),
-                  child: _buildFlatBreakdown(),
+                  // Drills down to Monthly Burn Screen for more detail
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MonthlyBurnScreen(),
+                      ),
+                    );
+                  },
+                  child: _buildPieChartBreakdown(),
                 ),
 
                 const SizedBox(height: 40),
@@ -149,8 +164,6 @@ class HomeScreen extends StatelessWidget {
   }
 
   // --- WIDGET BUILDERS ---
-
-
 
   Widget _buildMinimalHeader() {
     return Row(
@@ -188,11 +201,8 @@ class HomeScreen extends StatelessWidget {
             color: const Color(0xFF141416),
             shape: BoxShape.circle,
             border: Border.all(color: Colors.white.withOpacity(0.08)),
-            image: const DecorationImage(
-              image: NetworkImage("https://i.pravatar.cc/150?img=68"),
-              fit: BoxFit.cover,
-            ),
           ),
+          child: const Icon(Icons.person, color: Colors.white38),
         ),
       ],
     );
@@ -412,68 +422,29 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBudgetComparison() {
+  Widget _buildTrendChart() {
     return Container(
+      width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: const Color(0xFF141416),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: Colors.white.withOpacity(0.04)),
       ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Spent: \$48,200",
-                style: GoogleFonts.inter(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Text(
-                "Budget: \$50,000",
-                style: GoogleFonts.inter(color: Colors.white38, fontSize: 12),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Stack(
-            children: [
-              Container(
-                height: 8,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1F1F22),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              ),
-              FractionallySizedBox(
-                widthFactor: 0.85,
-                child: Container(
-                  height: 8,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              "96.4% Utilized",
-              style: GoogleFonts.inter(
-                color: Colors.white,
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
+      child: SizedBox(
+        height: 160,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            _buildFlatBar("Jan", 0.4),
+            _buildFlatBar("Feb", 0.5),
+            _buildFlatBar("Mar", 0.45),
+            _buildFlatBar("Apr", 0.6),
+            _buildFlatBar("May", 0.55),
+            _buildFlatBar("Jun", 0.8, isActive: true),
+          ],
+        ),
       ),
     );
   }
@@ -483,11 +454,11 @@ class HomeScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Container(
-          width: 40,
+          width: 36, // Slightly wider for touch targets
           height: 120 * pct,
           decoration: BoxDecoration(
             color: isActive ? Colors.white : const Color(0xFF1F1F22),
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(6),
           ),
         ),
         const SizedBox(height: 12),
@@ -503,82 +474,167 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFlatBreakdown() {
-    return Column(
-      children: [
-        _buildFlatBreakdownRow("Salaries", "65%", 0.65),
-        const SizedBox(height: 24),
-        _buildFlatBreakdownRow("Servers", "20%", 0.20),
-        const SizedBox(height: 24),
-        _buildFlatBreakdownRow("Marketing", "10%", 0.10),
-        const SizedBox(height: 24),
-        _buildFlatBreakdownRow("Office", "5%", 0.05),
-      ],
-    );
-  }
+  Widget _buildPieChartBreakdown() {
+    final expenseData = [
+      {
+        'category': 'Salaries',
+        'amount': 27625,
+        'percentage': 65,
+        'color': const Color(0xFF30D158),
+      },
+      {
+        'category': 'Servers',
+        'amount': 8500,
+        'percentage': 20,
+        'color': const Color(0xFF3A4B8A),
+      },
+      {
+        'category': 'Marketing',
+        'amount': 4250,
+        'percentage': 10,
+        'color': const Color(0xFFFF9F0A),
+      },
+      {
+        'category': 'Office',
+        'amount': 2125,
+        'percentage': 5,
+        'color': const Color(0xFF00BFA5),
+      },
+    ];
 
-  Widget _buildFlatBreakdownRow(String title, String pct, double value) {
-    return Row(
-      children: [
-        Expanded(
-          flex: 3,
-          child: Text(
-            title,
-            style: GoogleFonts.inter(
-              color: Colors.white70,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        Expanded(
-          flex: 4,
-          child: Stack(
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: const Color(0xFF141416),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.white.withOpacity(0.04)),
+      ),
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                height: 4,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1F1F22),
-                  borderRadius: BorderRadius.circular(2),
+              // Pie Chart
+              Expanded(
+                flex: 1,
+                child: SizedBox(
+                  height: 140, // Constrained height
+                  child: PieChart(
+                    PieChartData(
+                      sectionsSpace: 4,
+                      centerSpaceRadius: 40,
+                      centerSpaceColor: Colors.transparent,
+                      sections: expenseData.map((data) {
+                        return PieChartSectionData(
+                          color: data['color'] as Color,
+                          value: (data['percentage'] as int).toDouble(),
+                          title: '', // Hiding title on chart for cleaner look
+                          radius: 16,
+                          showTitle: false,
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
               ),
-              FractionallySizedBox(
-                widthFactor: value,
-                child: Container(
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: Colors.white, // Monochrome progress
-                    borderRadius: BorderRadius.circular(2),
-                  ),
+              const SizedBox(width: 24),
+              // Legend
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: expenseData.map((data) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 8,
+                            height: 8,
+                            decoration: BoxDecoration(
+                              color: data['color'] as Color,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  data['category'] as String,
+                                  style: GoogleFonts.inter(
+                                    color: Colors.white70,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            '${data['percentage']}%',
+                            style: GoogleFonts.inter(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              fontFeatures: [
+                                const FontFeature.tabularFigures(),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
             ],
           ),
-        ),
-        Expanded(
-          flex: 2,
-          child: Text(
-            pct,
-            textAlign: TextAlign.end,
-            style: GoogleFonts.inter(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-              fontFeatures: [const FontFeature.tabularFigures()],
+          const SizedBox(height: 20),
+          // Total Footer
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.03),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.white.withOpacity(0.06)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Total Monthly Expenses',
+                  style: GoogleFonts.inter(
+                    color: Colors.white54,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  '\$42,500',
+                  style: GoogleFonts.inter(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    fontFeatures: [const FontFeature.tabularFigures()],
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  // --- NEW HELPER WIDGET ---
   Widget _buildViewAllButton(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const AnalysisScreen()),
+          MaterialPageRoute(builder: (context) => const MonthlyBurnScreen()),
         );
       },
       child: Container(

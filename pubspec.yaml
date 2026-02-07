@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   google_fonts: ^6.2.1
   shadcn_ui: ^0.45.2
+  fl_chart: ^0.68.0
 
 dev_dependencies:
   flutter_test:

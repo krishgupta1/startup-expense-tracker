@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:ui'; // Required for FontFeature
 import 'package:google_fonts/google_fonts.dart';
 
-class MonthlyBurnScreen extends StatelessWidget {
+class MonthlyBurnScreen extends StatefulWidget {
   const MonthlyBurnScreen({super.key});
+
+  @override
+  State<MonthlyBurnScreen> createState() => _MonthlyBurnScreenState();
+}
+
+class _MonthlyBurnScreenState extends State<MonthlyBurnScreen> {
+  // State from Code B for the Range Selector
+  String _selectedRange = "6M";
+  final List<String> _ranges = ["1M", "3M", "6M", "YTD", "ALL"];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF09090B),
+      backgroundColor: const Color(0xFF09090B), // Code A Background
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: SafeArea(
@@ -18,37 +28,47 @@ class MonthlyBurnScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Header
+                // 1. Header (Code A)
                 _buildHeader(context),
+
+                const SizedBox(height: 24),
+
+                // 2. Range Selector (From Code B, styled like Code A)
+                _buildRangeSelector(),
 
                 const SizedBox(height: 32),
 
-                // Main Burn Card
+                // 3. Main Burn Card (Code A)
                 _buildMainBurnCard(),
 
                 const SizedBox(height: 32),
 
-                // Burn Trend Chart
+                // 4. Burn Trend Chart (Code A)
                 _buildBurnTrendSection(),
 
                 const SizedBox(height: 32),
 
-                // Expense Categories
+                // 5. Expense Categories (Code A)
                 _buildExpenseCategoriesSection(),
 
                 const SizedBox(height: 32),
 
-                // Vendor Breakdown
+                // 6. Team Cost Distribution (From Code B, styled like Code A)
+                _buildTeamCostSection(),
+
+                const SizedBox(height: 32),
+
+                // 7. Vendor Breakdown (Code A)
                 _buildVendorBreakdownSection(),
 
                 const SizedBox(height: 32),
 
-                // Burn Optimization
+                // 8. Burn Optimization (Code A)
                 _buildBurnOptimizationSection(),
 
                 const SizedBox(height: 32),
 
-                // Forecast Comparison
+                // 9. Forecast Comparison (Code A)
                 _buildForecastComparisonSection(),
 
                 const SizedBox(height: 40),
@@ -60,6 +80,7 @@ class MonthlyBurnScreen extends StatelessWidget {
     );
   }
 
+  // --- Header (Code A) ---
   Widget _buildHeader(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,6 +125,50 @@ class MonthlyBurnScreen extends StatelessWidget {
     );
   }
 
+  // --- Range Selector (From Code B, Adapted Style) ---
+  Widget _buildRangeSelector() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: const Color(0xFF141416),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white.withOpacity(0.04)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: _ranges.map((range) {
+          final isSelected = _selectedRange == range;
+          return Expanded(
+            child: GestureDetector(
+              onTap: () => setState(() => _selectedRange = range),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? Colors.white.withOpacity(0.1)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  range,
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.inter(
+                    color: isSelected ? Colors.white : Colors.white38,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  // --- Main Burn Card (Code A) ---
   Widget _buildMainBurnCard() {
     return Container(
       width: double.infinity,
@@ -230,6 +295,7 @@ class MonthlyBurnScreen extends StatelessWidget {
     );
   }
 
+  // --- Burn Trend (Code A) ---
   Widget _buildBurnTrendSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -297,6 +363,7 @@ class MonthlyBurnScreen extends StatelessWidget {
     );
   }
 
+  // --- Expense Categories (Code A) ---
   Widget _buildExpenseCategoriesSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -349,6 +416,101 @@ class MonthlyBurnScreen extends StatelessWidget {
                 const Color(0xFF00BFA5),
               ),
             ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  // --- Team Cost Distribution (From Code B, Adapted Style) ---
+  Widget _buildTeamCostSection() {
+    // Data from Code B
+    final teams = [
+      {"name": "Engineering", "cost": "\$62,000", "pct": 0.65},
+      {"name": "Sales", "cost": "\$35,000", "pct": 0.40},
+      {"name": "Product", "cost": "\$22,000", "pct": 0.25},
+      {"name": "Marketing", "cost": "\$18,000", "pct": 0.20},
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Team Cost Distribution",
+          style: GoogleFonts.inter(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.5,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: const Color(0xFF141416),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Colors.white.withOpacity(0.04)),
+          ),
+          child: Column(
+            children: teams.map((team) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 24),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Text(
+                        team['name'] as String,
+                        style: GoogleFonts.inter(
+                          color: Colors.white70,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 4,
+                      child: Text(
+                        team['cost'] as String,
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          fontFeatures: [const FontFeature.tabularFigures()],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: Stack(
+                        children: [
+                          Container(
+                            height: 4,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF1F1F22),
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                          ),
+                          FractionallySizedBox(
+                            widthFactor: team['pct'] as double,
+                            child: Container(
+                              height: 4,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(2),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
           ),
         ),
       ],
@@ -415,6 +577,7 @@ class MonthlyBurnScreen extends StatelessWidget {
     );
   }
 
+  // --- Vendor Breakdown (Code A) ---
   Widget _buildVendorBreakdownSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -519,6 +682,7 @@ class MonthlyBurnScreen extends StatelessWidget {
     );
   }
 
+  // --- Burn Optimization (Code A) ---
   Widget _buildBurnOptimizationSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -633,6 +797,7 @@ class MonthlyBurnScreen extends StatelessWidget {
     );
   }
 
+  // --- Forecast Comparison (Code A) ---
   Widget _buildForecastComparisonSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
