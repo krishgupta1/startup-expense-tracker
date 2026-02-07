@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:startup_expense_tracker/features/navigation/screens/navigation_wrapper.dart';
+import 'package:startup_expense_tracker/features/auth/screen/signup.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -22,7 +22,7 @@ class FinancialDashboardApp extends StatelessWidget {
         useMaterial3: true,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      home: const NavigationWrapper(),
+      home: const SignUpScreen(),
     );
   }
 }

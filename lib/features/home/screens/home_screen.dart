@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../analysis/screens/analysis_screen.dart';
+import 'runway_estimation_screen.dart';
+import 'funds_overview_screen.dart';
+import 'monthly_burn_screen.dart';
+import 'ai_insight_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -16,7 +20,6 @@ class HomeScreen extends StatelessWidget {
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: SafeArea(
-          bottom: false,
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -28,41 +31,73 @@ class HomeScreen extends StatelessWidget {
 
                 const SizedBox(height: 32),
 
-                // 2. AI Insight (Flat Bordered Pill)
-                _buildFlatAIPill(),
-
-                const SizedBox(height: 32),
-
-                // 3. Hero Card (Runway) - Flat Style
-                _buildFlatRunwayCard(currentHealth),
+                // 2. Hero Card (Runway) - Flat Style
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RunwayEstimationScreen(),
+                    ),
+                  ),
+                  child: _buildFlatRunwayCard(currentHealth),
+                ),
 
                 const SizedBox(height: 16),
 
-                // 4. Metrics Grid (Funds & Burn) - Flat Style
+                // 3. Metrics Grid (Funds & Burn) - Flat Style
                 Row(
                   children: [
                     Expanded(
-                      child: _buildFlatMetricCard(
-                        label: "Total Funds",
-                        value: "\$482k",
-                        icon: Icons.account_balance_wallet_outlined,
+                      child: GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const FundsOverviewScreen(),
+                          ),
+                        ),
+                        child: _buildFlatMetricCard(
+                          label: "Total Funds",
+                          value: "\$482k",
+                          icon: Icons.account_balance_wallet_outlined,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: _buildFlatMetricCard(
-                        label: "Monthly Burn",
-                        value: "\$42.5k",
-                        icon: Icons.local_fire_department_outlined,
-                        isBurn: true,
+                      child: GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MonthlyBurnScreen(),
+                          ),
+                        ),
+                        child: _buildFlatMetricCard(
+                          label: "Monthly Burn",
+                          value: "\$42.5k",
+                          icon: Icons.local_fire_department_outlined,
+                          isBurn: true,
+                        ),
                       ),
                     ),
                   ],
                 ),
 
+                const SizedBox(height: 32),
+
+                // 4. AI Insight (Flat Bordered Pill)
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AIInsightScreen(),
+                    ),
+                  ),
+                  child: _buildFlatAIPill(),
+                ),
+
                 const SizedBox(height: 40),
 
-                // 5. Trend Chart (Minimal Bars)
+                // 6. Trend Chart (Minimal Bars)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -79,13 +114,19 @@ class HomeScreen extends StatelessWidget {
                       builder: (context) => const AnalysisScreen(),
                     ),
                   ),
-                  child: _buildFlatTrendChart(),
+                  child: _buildBudgetComparison(),
                 ),
 
                 const SizedBox(height: 40),
 
-                // 6. Breakdown (Clean List)
-                _buildSectionTitle("Expense Breakdown"),
+                // 7. Breakdown (Clean List)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildSectionTitle("Expense Breakdown"),
+                    _buildViewAllButton(context),
+                  ],
+                ),
                 const SizedBox(height: 20),
                 // Glimpse Breakdown (Clickable)
                 GestureDetector(
@@ -108,6 +149,8 @@ class HomeScreen extends StatelessWidget {
   }
 
   // --- WIDGET BUILDERS ---
+
+
 
   Widget _buildMinimalHeader() {
     return Row(
@@ -369,19 +412,67 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFlatTrendChart() {
-    return SizedBox(
-      height: 160,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.end,
+  Widget _buildBudgetComparison() {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: const Color(0xFF141416),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.white.withOpacity(0.04)),
+      ),
+      child: Column(
         children: [
-          _buildFlatBar("Jan", 0.4),
-          _buildFlatBar("Feb", 0.5),
-          _buildFlatBar("Mar", 0.45),
-          _buildFlatBar("Apr", 0.6),
-          _buildFlatBar("May", 0.55),
-          _buildFlatBar("Jun", 0.8, isActive: true),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Spent: \$48,200",
+                style: GoogleFonts.inter(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Text(
+                "Budget: \$50,000",
+                style: GoogleFonts.inter(color: Colors.white38, fontSize: 12),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Stack(
+            children: [
+              Container(
+                height: 8,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1F1F22),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+              FractionallySizedBox(
+                widthFactor: 0.85,
+                child: Container(
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              "96.4% Utilized",
+              style: GoogleFonts.inter(
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ],
       ),
     );
