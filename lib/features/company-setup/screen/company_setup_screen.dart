@@ -340,8 +340,9 @@ class _CompanySetupScreenState extends State<CompanySetupScreen> {
                       ? _selectedCategories.remove(cat)
                       : _selectedCategories.add(cat);
                   // Hide error as soon as user selects something
-                  if (_selectedCategories.isNotEmpty)
+                  if (_selectedCategories.isNotEmpty) {
                     _showCategoryError = false;
+                  }
                 });
               },
               child: AnimatedContainer(
@@ -539,7 +540,7 @@ class _CompanySetupScreenState extends State<CompanySetupScreen> {
               style: GoogleFonts.inter(color: Colors.white54, fontSize: 16),
             ),
             const SizedBox(height: 24),
-            if (extraHeader != null) extraHeader,
+            ?extraHeader,
             ...children,
             const SizedBox(height: 100),
           ],

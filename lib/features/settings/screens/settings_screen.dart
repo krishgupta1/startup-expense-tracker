@@ -160,30 +160,15 @@ class SettingsScreen extends StatelessWidget {
   // --- WIDGET BUILDERS ---
 
   Widget _buildHeader(BuildContext context) {
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: const Color(0xFF141416),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: Colors.white.withOpacity(0.04)),
-            ),
-            child: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
-          ),
+    return Center(
+      child: Text(
+        "Settings",
+        style: GoogleFonts.inter(
+          color: Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
         ),
-        const SizedBox(width: 16),
-        Text(
-          "Settings",
-          style: GoogleFonts.inter(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ],
+      ),
     );
   }
 
@@ -224,7 +209,7 @@ class SettingsScreen extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Text(
-          "Sahil Mishra",
+          "Krish Gupta",
           style: GoogleFonts.inter(
             color: Colors.white,
             fontSize: 20,
@@ -233,7 +218,7 @@ class SettingsScreen extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          "sahil@bullxchange.com",
+          "krishgupta0072@gmail.com",
           style: GoogleFonts.inter(color: Colors.white38, fontSize: 14),
         ),
         const SizedBox(height: 16),
