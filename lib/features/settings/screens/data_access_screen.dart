@@ -72,7 +72,7 @@ class _DataAccessScreenState extends State<DataAccessScreen> {
                       Switch(
                         value: _allowSupportAccess,
                         onChanged: (val) => setState(() => _allowSupportAccess = val),
-                        activeColor: const Color(0xFF0A84FF),
+                        activeThumbColor: const Color(0xFF0A84FF),
                         activeTrackColor: const Color(0xFF0A84FF).withOpacity(0.3),
                         inactiveThumbColor: Colors.white54,
                         inactiveTrackColor: Colors.white10,
