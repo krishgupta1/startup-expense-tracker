@@ -28,17 +28,12 @@ class HomeScreen extends StatelessWidget {
 
                 const SizedBox(height: 32),
 
-                // 2. AI Insight (Flat Bordered Pill)
-                _buildFlatAIPill(),
-
-                const SizedBox(height: 32),
-
-                // 3. Hero Card (Runway) - Flat Style
+                // 2. Hero Card (Runway) - Flat Style
                 _buildFlatRunwayCard(currentHealth),
 
                 const SizedBox(height: 16),
 
-                // 4. Metrics Grid (Funds & Burn) - Flat Style
+                // 3. Metrics Grid (Funds & Burn) - Flat Style
                 Row(
                   children: [
                     Expanded(
@@ -60,9 +55,14 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
 
+                const SizedBox(height: 32),
+
+                // 4. AI Insight (Flat Bordered Pill)
+                _buildFlatAIPill(),
+
                 const SizedBox(height: 40),
 
-                // 5. Trend Chart (Minimal Bars)
+                // 6. Trend Chart (Minimal Bars)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -84,7 +84,7 @@ class HomeScreen extends StatelessWidget {
 
                 const SizedBox(height: 40),
 
-                // 6. Breakdown (Clean List)
+                // 7. Breakdown (Clean List)
                 _buildSectionTitle("Expense Breakdown"),
                 const SizedBox(height: 20),
                 // Glimpse Breakdown (Clickable)
