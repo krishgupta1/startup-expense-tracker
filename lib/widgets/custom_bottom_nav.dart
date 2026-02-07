@@ -16,12 +16,10 @@ class ModernDarkNavBar extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.black,
-        border: Border(
-          top: BorderSide(color: Color(0xFF222222), width: 1.5),
-        ),
+        border: Border(top: BorderSide(color: Color(0xFF222222), width: 1.5)),
       ),
       child: SafeArea(
-        // FIX: Removed fixed height. 
+        // FIX: Removed fixed height.
         // Using vertical padding allows the widget to size itself naturally
         // preventing the "1 pixel overflow" error.
         child: Padding(
@@ -30,10 +28,30 @@ class ModernDarkNavBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _buildNavItem(0, Icons.home_rounded, Icons.home_outlined, "Home"),
-              _buildNavItem(1, Icons.groups_rounded, Icons.groups_outlined, "Team"),
-              _buildNavItem(2, Icons.receipt_long_rounded, Icons.receipt_long_outlined, "Expenses"),
-              _buildNavItem(3, Icons.insights_rounded, Icons.insights_outlined, "AI"),
-              _buildNavItem(4, Icons.settings_rounded, Icons.settings_outlined, "Settings"),
+              _buildNavItem(
+                1,
+                Icons.groups_rounded,
+                Icons.groups_outlined,
+                "Team",
+              ),
+              _buildNavItem(
+                2,
+                Icons.receipt_long_rounded,
+                Icons.receipt_long_outlined,
+                "Expenses",
+              ),
+              _buildNavItem(
+                3,
+                Icons.insights_rounded,
+                Icons.insights_outlined,
+                "AI",
+              ),
+              _buildNavItem(
+                4,
+                Icons.settings_rounded,
+                Icons.settings_outlined,
+                "Settings",
+              ),
             ],
           ),
         ),
@@ -60,7 +78,9 @@ class ModernDarkNavBar extends StatelessWidget {
               duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFF222222) : Colors.transparent,
+                color: isSelected
+                    ? const Color(0xFF222222)
+                    : Colors.transparent,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Icon(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../analysis/screens/analysis_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -11,53 +12,49 @@ class HomeScreen extends StatelessWidget {
     const HealthStatus currentHealth = HealthStatus.safe;
 
     return Scaffold(
-      extendBody: true,
-      // 1. Background: Subtle gradient instead of flat black for depth
-      backgroundColor: const Color(0xFF09090B),
+      backgroundColor: const Color(0xFF09090B), // Deep Matte Black
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: SafeArea(
+        child: SafeArea(
+          bottom: false,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 12),
-
-                // 2. Header: Cleaner layout
-                _buildHeader(),
+                // 1. Header (Minimal)
+                _buildMinimalHeader(),
 
                 const SizedBox(height: 32),
 
-                // 3. AI Glimpse: Pill style, glowing slightly
-                _buildAIPill(),
+                // 2. AI Insight (Flat Bordered Pill)
+                _buildFlatAIPill(),
 
-                const SizedBox(height: 24),
+                const SizedBox(height: 32),
 
-                // 4. Hero Card: Focus on the big number, less chrome
-                _buildRunwayCard(currentHealth),
+                // 3. Hero Card (Runway) - Flat Style
+                _buildFlatRunwayCard(currentHealth),
 
                 const SizedBox(height: 16),
 
-                // 5. Metrics: Uniform height, icon-driven
+                // 4. Metrics Grid (Funds & Burn) - Flat Style
                 Row(
                   children: [
                     Expanded(
-                      child: _buildMetricTile(
+                      child: _buildFlatMetricCard(
                         label: "Total Funds",
                         value: "\$482k",
-                        icon: Icons.wallet,
-                        accent: Colors.white,
+                        icon: Icons.account_balance_wallet_outlined,
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 16),
                     Expanded(
-                      child: _buildMetricTile(
+                      child: _buildFlatMetricCard(
                         label: "Monthly Burn",
                         value: "\$42.5k",
-                        icon: Icons.local_fire_department_rounded,
-                        accent: const Color(0xFFFF453A),
+                        icon: Icons.local_fire_department_outlined,
+                        isBurn: true,
                       ),
                     ),
                   ],
@@ -65,17 +62,43 @@ class HomeScreen extends StatelessWidget {
 
                 const SizedBox(height: 40),
 
-                // 6. Trend Chart: Minimalist approach
-                _buildSectionTitle("Burn Trend"),
-                const SizedBox(height: 16),
-                _buildTrendChart(),
+                // 5. Trend Chart (Minimal Bars)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildSectionTitle("Burn Trend"),
+                    _buildViewAllButton(context),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                // Glimpse Chart (Clickable)
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AnalysisScreen(),
+                    ),
+                  ),
+                  child: _buildFlatTrendChart(),
+                ),
 
                 const SizedBox(height: 40),
 
-                // 7. Expenses: List style instead of just bars
+                // 6. Breakdown (Clean List)
                 _buildSectionTitle("Expense Breakdown"),
-                const SizedBox(height: 16),
-                _buildModernBreakdown(),
+                const SizedBox(height: 20),
+                // Glimpse Breakdown (Clickable)
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AnalysisScreen(),
+                    ),
+                  ),
+                  child: _buildFlatBreakdown(),
+                ),
+
+                const SizedBox(height: 40),
               ],
             ),
           ),
@@ -86,121 +109,87 @@ class HomeScreen extends StatelessWidget {
 
   // --- WIDGET BUILDERS ---
 
-  Widget _buildHeader() {
+  Widget _buildMinimalHeader() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Row(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 48,
-              width: 48,
-              decoration: BoxDecoration(
-                color: Colors.grey[900],
-                shape: BoxShape.circle,
-                image: const DecorationImage(
-                  image: NetworkImage("https://i.pravatar.cc/150?img=68"),
-                  fit: BoxFit.cover,
-                ),
-                border: Border.all(color: Colors.white12, width: 1),
+            Text(
+              "Overview",
+              style: GoogleFonts.inter(
+                color: Colors.white38,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(width: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Welcome back,",
-                  style: GoogleFonts.inter(
-                    color: Colors.white54,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
-                  "Founder",
-                  style: GoogleFonts.inter(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
+            const SizedBox(height: 6),
+            Text(
+              "Startup Health",
+              style: GoogleFonts.inter(
+                color: Colors.white,
+                fontSize: 28,
+                fontWeight: FontWeight.w600,
+                letterSpacing: -1,
+              ),
             ),
           ],
         ),
+        // Minimal Profile Placeholder
         Container(
-          padding: const EdgeInsets.all(10),
+          height: 44,
+          width: 44,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.05),
+            color: const Color(0xFF141416),
             shape: BoxShape.circle,
-            border: Border.all(color: Colors.white.withOpacity(0.05)),
-          ),
-          child: const Icon(
-            Icons.notifications_none_rounded,
-            color: Colors.white,
-            size: 22,
+            border: Border.all(color: Colors.white.withOpacity(0.08)),
+            image: const DecorationImage(
+              image: NetworkImage("https://i.pravatar.cc/150?img=68"),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildAIPill() {
+  Widget _buildFlatAIPill() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFF18181A),
-        borderRadius: BorderRadius.circular(30),
+        // Transparent background, only border
         border: Border.all(color: Colors.white.withOpacity(0.08)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(20),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.all(6),
-            decoration: const BoxDecoration(
-              color: Color(0xFF0A84FF),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.auto_awesome,
-              color: Colors.white,
-              size: 14,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: RichText(
-              text: TextSpan(
-                style: GoogleFonts.inter(fontSize: 13, height: 1.4),
-                children: [
-                  TextSpan(
-                    text: "Insight: ",
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  TextSpan(
-                    text: "Reducing server load could extend runway by ",
-                    style: GoogleFonts.inter(color: Colors.white70),
-                  ),
-                  TextSpan(
-                    text: "14 days.",
-                    style: GoogleFonts.inter(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
+          Row(
+            children: [
+              const Icon(Icons.auto_awesome, color: Colors.white, size: 16),
+              const SizedBox(width: 12),
+              Text(
+                "INSIGHT",
+                style: GoogleFonts.inter(
+                  color: Colors.white,
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.0,
+                ),
               ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            "Projected burn rate may decrease by 8% if marketing spend is optimized.",
+            style: GoogleFonts.inter(
+              color: Colors.white70,
+              fontSize: 14,
+              height: 1.5,
+              fontWeight: FontWeight.w400,
             ),
           ),
         ],
@@ -208,28 +197,32 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRunwayCard(HealthStatus status) {
-    // Premium color mapping
-    final statusColor = switch (status) {
-      HealthStatus.safe => const Color(0xFF30D158),
-      HealthStatus.warning => const Color(0xFFFF9F0A),
-      HealthStatus.critical => const Color(0xFFFF453A),
-    };
+  Widget _buildFlatRunwayCard(HealthStatus status) {
+    Color statusColor;
+    String statusText;
+
+    switch (status) {
+      case HealthStatus.safe:
+        statusColor = const Color(0xFF30D158);
+        statusText = "Safe";
+        break;
+      case HealthStatus.warning:
+        statusColor = const Color(0xFFFF9F0A);
+        statusText = "Warning";
+        break;
+      case HealthStatus.critical:
+        statusColor = const Color(0xFFFF453A);
+        statusText = "Critical";
+        break;
+    }
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(28),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: const Color(0xFF18181A),
-        borderRadius: BorderRadius.circular(32),
-        border: Border.all(color: Colors.white.withOpacity(0.07)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
+        color: const Color(0xFF141416), // Solid Matte Grey
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.white.withOpacity(0.04)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,28 +233,41 @@ class HomeScreen extends StatelessWidget {
               Text(
                 "Est. Runway",
                 style: GoogleFonts.inter(
-                  color: Colors.white54,
+                  color: Colors.white38,
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
               ),
+              // Tiny minimal badge
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
-                  vertical: 6,
+                  vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: statusColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(color: Colors.white.withOpacity(0.1)),
                 ),
-                child: Text(
-                  status.name.toUpperCase(),
-                  style: GoogleFonts.inter(
-                    color: statusColor,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 0.5,
-                  ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: statusColor,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      statusText,
+                      style: GoogleFonts.inter(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -274,93 +280,60 @@ class HomeScreen extends StatelessWidget {
                 "11.4",
                 style: GoogleFonts.inter(
                   color: Colors.white,
-                  fontSize: 64, // Massive font for impact
-                  fontWeight: FontWeight.w400,
+                  fontSize: 56, // Big Flat Typography
+                  fontWeight: FontWeight.w400, // Thinner weight looks cleaner
                   height: 1.0,
                   letterSpacing: -2,
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 12),
               Padding(
-                padding: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.only(bottom: 8),
                 child: Text(
                   "Months",
                   style: GoogleFonts.inter(
                     color: Colors.white38,
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 28),
-
-          // Modern Gauge
-          Stack(
-            children: [
-              Container(
-                height: 8,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.08),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              ),
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  return Container(
-                    height: 8,
-                    width: constraints.maxWidth * 0.7,
-                    decoration: BoxDecoration(
-                      // Gradient bar
-                      gradient: LinearGradient(
-                        colors: [statusColor.withOpacity(0.7), statusColor],
-                      ),
-                      borderRadius: BorderRadius.circular(4),
-                      boxShadow: [
-                        BoxShadow(
-                          color: statusColor.withOpacity(0.4),
-                          blurRadius: 10,
-                          spreadRadius: 0,
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ],
+          const SizedBox(height: 24),
+          // Flat Progress Bar
+          ClipRRect(
+            borderRadius: BorderRadius.circular(2),
+            child: LinearProgressIndicator(
+              value: 0.7,
+              minHeight: 4,
+              backgroundColor: Colors.white.withOpacity(0.05),
+              valueColor: AlwaysStoppedAnimation<Color>(statusColor),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildMetricTile({
+  Widget _buildFlatMetricCard({
     required String label,
     required String value,
     required IconData icon,
-    required Color accent,
+    bool isBurn = false,
   }) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: const Color(0xFF18181A),
+        color: const Color(0xFF141416),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: Colors.white.withOpacity(0.04)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: accent.withOpacity(0.1),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, color: accent, size: 20),
-          ),
-          const SizedBox(height: 16),
+          Icon(icon, color: Colors.white38, size: 20),
+          const SizedBox(height: 24),
           Text(
             value,
             style: GoogleFonts.inter(
@@ -375,7 +348,7 @@ class HomeScreen extends StatelessWidget {
             label,
             style: GoogleFonts.inter(
               color: Colors.white38,
-              fontSize: 13,
+              fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -385,58 +358,45 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildSectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 4),
-      child: Text(
-        title,
-        style: GoogleFonts.inter(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          letterSpacing: -0.5,
-        ),
+    return Text(
+      title,
+      style: GoogleFonts.inter(
+        color: Colors.white,
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        letterSpacing: -0.5,
       ),
     );
   }
 
-  Widget _buildTrendChart() {
+  Widget _buildFlatTrendChart() {
     return SizedBox(
-      height: 180,
+      height: 160,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          _buildChartBar("Jan", 0.4),
-          _buildChartBar("Feb", 0.5),
-          _buildChartBar("Mar", 0.45),
-          _buildChartBar("Apr", 0.6),
-          _buildChartBar("May", 0.55),
-          _buildChartBar("Jun", 0.8, isActive: true),
+          _buildFlatBar("Jan", 0.4),
+          _buildFlatBar("Feb", 0.5),
+          _buildFlatBar("Mar", 0.45),
+          _buildFlatBar("Apr", 0.6),
+          _buildFlatBar("May", 0.55),
+          _buildFlatBar("Jun", 0.8, isActive: true),
         ],
       ),
     );
   }
 
-  Widget _buildChartBar(String label, double pct, {bool isActive = false}) {
+  Widget _buildFlatBar(String label, double pct, {bool isActive = false}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Container(
-          width: 36, // Wider bars
-          height: 140 * pct,
+          width: 40,
+          height: 120 * pct,
           decoration: BoxDecoration(
-            color: isActive ? Colors.white : const Color(0xFF252528),
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(8),
-              bottom: Radius.circular(8),
-            ),
-            gradient: isActive
-                ? const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Colors.white, Color(0xFFD0D0D0)],
-                  )
-                : null,
+            color: isActive ? Colors.white : const Color(0xFF1F1F22),
+            borderRadius: BorderRadius.circular(4),
           ),
         ),
         const SizedBox(height: 12),
@@ -445,109 +405,111 @@ class HomeScreen extends StatelessWidget {
           style: GoogleFonts.inter(
             color: isActive ? Colors.white : Colors.white38,
             fontSize: 12,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildModernBreakdown() {
+  Widget _buildFlatBreakdown() {
     return Column(
       children: [
-        _buildExpenseRow(
-          "Salaries (Team)",
-          "65%",
-          const Color(0xFF5E5CE6),
-          Icons.people_outline,
+        _buildFlatBreakdownRow("Salaries", "65%", 0.65),
+        const SizedBox(height: 24),
+        _buildFlatBreakdownRow("Servers", "20%", 0.20),
+        const SizedBox(height: 24),
+        _buildFlatBreakdownRow("Marketing", "10%", 0.10),
+        const SizedBox(height: 24),
+        _buildFlatBreakdownRow("Office", "5%", 0.05),
+      ],
+    );
+  }
+
+  Widget _buildFlatBreakdownRow(String title, String pct, double value) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 3,
+          child: Text(
+            title,
+            style: GoogleFonts.inter(
+              color: Colors.white70,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ),
-        _buildExpenseRow(
-          "Servers & Cloud",
-          "20%",
-          const Color(0xFF30D158),
-          Icons.cloud_outlined,
+        Expanded(
+          flex: 4,
+          child: Stack(
+            children: [
+              Container(
+                height: 4,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1F1F22),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              FractionallySizedBox(
+                widthFactor: value,
+                child: Container(
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Monochrome progress
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-        _buildExpenseRow(
-          "Marketing",
-          "10%",
-          const Color(0xFFFF9F0A),
-          Icons.campaign_outlined,
-        ),
-        _buildExpenseRow(
-          "Office & Misc",
-          "5%",
-          const Color(0xFFFF453A),
-          Icons.storefront_outlined,
+        Expanded(
+          flex: 2,
+          child: Text(
+            pct,
+            textAlign: TextAlign.end,
+            style: GoogleFonts.inter(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+              fontFeatures: [const FontFeature.tabularFigures()],
+            ),
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildExpenseRow(
-    String title,
-    String percent,
-    Color color,
-    IconData icon,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+  // --- NEW HELPER WIDGET ---
+  Widget _buildViewAllButton(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AnalysisScreen()),
+        );
+      },
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: const Color(0xFF18181A),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.white.withOpacity(0.03)),
+          color: const Color(0xFF141416),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.white.withOpacity(0.04)),
         ),
         child: Row(
           children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(icon, color: color, size: 20),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        title,
-                        style: GoogleFonts.inter(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        percent,
-                        style: GoogleFonts.inter(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  // Thin sleek progress bar
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(2),
-                    child: LinearProgressIndicator(
-                      value: double.parse(percent.replaceAll('%', '')) / 100,
-                      backgroundColor: Colors.white.withOpacity(0.05),
-                      valueColor: AlwaysStoppedAnimation(color),
-                      minHeight: 4,
-                    ),
-                  ),
-                ],
+            Text(
+              "FULL ANALYSIS",
+              style: GoogleFonts.inter(
+                color: Colors.white,
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 0.5,
               ),
             ),
+            const SizedBox(width: 4),
+            const Icon(Icons.arrow_forward, color: Colors.white, size: 12),
           ],
         ),
       ),
