@@ -133,13 +133,7 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 40),
 
                 // 6. Breakdown (Pie Chart)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _buildSectionTitle("Expense Breakdown"),
-                    _buildViewAllButton(context),
-                  ],
-                ),
+                _buildSectionTitle("Expense Breakdown"),
                 const SizedBox(height: 20),
                 GestureDetector(
                   // Drills down to Monthly Burn Screen for more detail
