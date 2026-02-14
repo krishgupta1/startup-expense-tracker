@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+// NOTE: Ensure these files exist or comment them out if testing in isolation
 import 'create_team_screen.dart';
 import 'team_detail_screen.dart';
 
@@ -17,7 +18,11 @@ class _TeamScreenState extends State<TeamScreen> {
   String _searchQuery = "";
   bool _isSearching = false;
 
-  // 2. Data Source
+  // 2. Filter State (Defaults)
+  String _selectedSortOption = "Name";
+  String _selectedOrder = "A-Z"; // Default order
+
+  // 3. Data Source
   final List<Map<String, dynamic>> _allTeams = [
     {
       "name": "Engineering",
@@ -63,16 +68,73 @@ class _TeamScreenState extends State<TeamScreen> {
     },
   ];
 
-  // 3. Filter Logic
+  // 4. Filter Logic
   List<Map<String, dynamic>> get _filteredTeams {
-    if (_searchQuery.isEmpty) return _allTeams;
-    return _allTeams
-        .where(
-          (team) => team['name'].toString().toLowerCase().contains(
-            _searchQuery.toLowerCase(),
-          ),
-        )
-        .toList();
+    List<Map<String, dynamic>> teams = List.from(_allTeams);
+
+    // Apply search filter
+    if (_searchQuery.isNotEmpty) {
+      teams = teams
+          .where(
+            (team) => team['name'].toString().toLowerCase().contains(
+              _searchQuery.toLowerCase(),
+            ),
+          )
+          .toList();
+    }
+
+    // Apply sorting
+    switch (_selectedSortOption) {
+      case "Name":
+        teams.sort(
+          (a, b) => _selectedOrder == "A-Z"
+              ? a['name'].toString().compareTo(b['name'].toString())
+              : b['name'].toString().compareTo(a['name'].toString()),
+        );
+        break;
+      case "Team Size":
+        teams.sort((a, b) {
+          int aSize = int.parse(a['members'].toString().split(' ')[0]);
+          int bSize = int.parse(b['members'].toString().split(' ')[0]);
+          return _selectedOrder == "Low-High" ? aSize - bSize : bSize - aSize;
+        });
+        break;
+      case "Monthly Amount":
+        teams.sort((a, b) {
+          int aCost = int.parse(
+            a['cost'].toString().replaceAll(RegExp(r'[^0-9]'), ''),
+          );
+          int bCost = int.parse(
+            b['cost'].toString().replaceAll(RegExp(r'[^0-9]'), ''),
+          );
+          return _selectedOrder == "Low-High" ? aCost - bCost : bCost - aCost;
+        });
+        break;
+    }
+
+    return teams;
+  }
+
+  // Toggle order when the same chip is clicked again
+  void _toggleOrder(String option) {
+    setState(() {
+      if (_selectedSortOption == option) {
+        // Toggle existing order
+        if (option == "Name") {
+          _selectedOrder = _selectedOrder == "A-Z" ? "Z-A" : "A-Z";
+        } else {
+          _selectedOrder = _selectedOrder == "Low-High" ? "High-Low" : "Low-High";
+        }
+      } else {
+        // Select new option and reset to default order
+        _selectedSortOption = option;
+        if (option == "Name") {
+          _selectedOrder = "A-Z";
+        } else {
+          _selectedOrder = "High-Low"; // Default for numbers usually High-Low
+        }
+      }
+    });
   }
 
   @override
@@ -94,26 +156,32 @@ class _TeamScreenState extends State<TeamScreen> {
 
                 const SizedBox(height: 32),
 
-                // 2. AI Insight (Hide when searching to save space)
+                // 2. AI Insight (Hide when searching)
                 if (!_isSearching) ...[
                   _buildAIPill(),
                   const SizedBox(height: 32),
                 ],
 
-                // 3. Teams List Header
+                // 3. Section Title & Filter Component
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     _buildSectionTitle(
                       _isSearching ? "SEARCH RESULTS" : "YOUR TEAMS",
                     ),
-                    if (!_isSearching)
-                      const Icon(Icons.sort, color: Colors.white24, size: 20),
                   ],
                 ),
+                
                 const SizedBox(height: 16),
 
-                // 4. Filtered List
+                // 4. NEW: Horizontal Filter Component (Chips)
+                if (!_isSearching)
+                  _buildFilterChips(),
+                
+                if (!_isSearching)
+                  const SizedBox(height: 24),
+
+                // 5. Teams List
                 _filteredTeams.isEmpty
                     ? _buildEmptyState()
                     : _buildTeamsList(context),
@@ -145,6 +213,91 @@ class _TeamScreenState extends State<TeamScreen> {
   }
 
   // --- WIDGET BUILDERS ---
+
+  Widget _buildFilterChips() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      physics: const BouncingScrollPhysics(),
+      // Allow scroll to clip nicely
+      clipBehavior: Clip.none,
+      child: Row(
+        children: [
+          _buildFilterChip(
+            label: "Name", 
+            icon: Icons.sort_by_alpha,
+            isSelected: _selectedSortOption == "Name",
+          ),
+          const SizedBox(width: 12),
+          _buildFilterChip(
+            label: "Monthly Amount", 
+            icon: Icons.attach_money,
+            isSelected: _selectedSortOption == "Monthly Amount",
+          ),
+          const SizedBox(width: 12),
+          _buildFilterChip(
+            label: "Team Size", 
+            icon: Icons.group_outlined,
+            isSelected: _selectedSortOption == "Team Size",
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilterChip({
+    required String label, 
+    required IconData icon, 
+    required bool isSelected
+  }) {
+    // Determine arrow direction for display
+    IconData arrowIcon;
+    if (label == "Name") {
+      arrowIcon = _selectedOrder == "A-Z" ? Icons.arrow_downward : Icons.arrow_upward;
+    } else {
+      arrowIcon = _selectedOrder == "High-Low" ? Icons.arrow_downward : Icons.arrow_upward;
+    }
+
+    return GestureDetector(
+      onTap: () => _toggleOrder(label),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF0A84FF) : const Color(0xFF141416),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: isSelected ? const Color(0xFF0A84FF) : Colors.white.withValues(alpha: 0.08)
+          ),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              color: isSelected ? Colors.white : Colors.white54,
+              size: 16,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: GoogleFonts.inter(
+                color: isSelected ? Colors.white : Colors.white70,
+                fontSize: 13,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+              ),
+            ),
+            if (isSelected) ...[
+              const SizedBox(width: 6),
+              Icon(
+                arrowIcon,
+                color: Colors.white,
+                size: 14,
+              ),
+            ]
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _buildHeader() {
     return Row(
@@ -194,7 +347,7 @@ class _TeamScreenState extends State<TeamScreen> {
               decoration: BoxDecoration(
                 color: const Color(0xFF141416),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.white.withOpacity(0.04)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
               ),
               child: const Icon(Icons.search, color: Colors.white, size: 20),
             ),
@@ -210,7 +363,7 @@ class _TeamScreenState extends State<TeamScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF141416),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.08)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
       ),
       child: Row(
         children: [
@@ -254,7 +407,7 @@ class _TeamScreenState extends State<TeamScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.white.withOpacity(0.08)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -329,7 +482,7 @@ class _TeamScreenState extends State<TeamScreen> {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           ),
           child: Column(
             children: [
@@ -341,7 +494,7 @@ class _TeamScreenState extends State<TeamScreen> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: (team['color'] as Color).withOpacity(0.15),
+                          color: (team['color'] as Color).withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Icon(
@@ -383,7 +536,7 @@ class _TeamScreenState extends State<TeamScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-              Divider(color: Colors.white.withOpacity(0.04), height: 1),
+              Divider(color: Colors.white.withValues(alpha: 0.04), height: 1),
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

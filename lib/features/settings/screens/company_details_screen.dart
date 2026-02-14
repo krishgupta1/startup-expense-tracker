@@ -193,7 +193,7 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
               decoration: BoxDecoration(
                 color: const Color(0xFF141416),
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: Colors.white.withOpacity(0.04)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
               ),
               child: const Icon(
                 Icons.arrow_back,
@@ -255,7 +255,7 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           ),
           child: TextField(
             controller: controller,
@@ -331,7 +331,7 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
               child: Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.05),
+                  color: Colors.white.withValues(alpha: 0.05),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Icon(Icons.add, color: Colors.white, size: 16),
@@ -360,7 +360,7 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
               decoration: BoxDecoration(
                 color: const Color(0xFF141416),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.white.withOpacity(0.04)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
               ),
               child: Row(
                 children: [
@@ -389,7 +389,7 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
                           ),
                         ),
                         Divider(
-                          color: Colors.white.withOpacity(0.05),
+                          color: Colors.white.withValues(alpha: 0.05),
                           height: 16,
                         ),
                         TextField(
@@ -416,7 +416,7 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFF453A).withOpacity(0.1),
+                        color: const Color(0xFFFF453A).withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
@@ -440,7 +440,7 @@ class _CompanyDetailsScreenState extends State<CompanyDetailsScreen> {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: const Color(0xFF09090B),
-        border: Border(top: BorderSide(color: Colors.white.withOpacity(0.05))),
+        border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
       ),
       child: SizedBox(
         width: double.infinity,

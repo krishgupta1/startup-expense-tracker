@@ -54,7 +54,7 @@ class _AdjustSalaryScreenState extends State<AdjustSalaryScreen> {
             
             _buildDetailRow("Effective Date", "Immediately", Icons.calendar_today),
             const SizedBox(height: 16),
-            Divider(color: Colors.white.withOpacity(0.04)),
+            Divider(color: Colors.white.withValues(alpha: 0.04)),
             const SizedBox(height: 16),
             _buildDetailRow("Reason", "Performance Raise", Icons.edit_note),
             

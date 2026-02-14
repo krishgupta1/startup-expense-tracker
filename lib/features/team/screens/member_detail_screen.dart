@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'edit_member_screen.dart';
 import 'adjust_salary_screen.dart';
+import 'payment_history_screen.dart';
 
 class MemberDetailScreen extends StatelessWidget {
   const MemberDetailScreen({super.key});
@@ -62,7 +63,7 @@ class MemberDetailScreen extends StatelessWidget {
                           color: const Color(0xFF141416),
                           borderRadius: BorderRadius.circular(24),
                           border: Border.all(
-                            color: Colors.white.withOpacity(0.04),
+                            color: Colors.white.withValues(alpha: 0.04),
                           ),
                         ),
                         child: Column(
@@ -101,13 +102,24 @@ class MemberDetailScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           _buildSectionTitle("PAYMENT HISTORY"),
-                          Text(
-                            "VIEW ALL",
-                            style: GoogleFonts.inter(
-                              color: Colors.white24,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.0,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const PaymentHistoryScreen(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              "VIEW ALL",
+                              style: GoogleFonts.inter(
+                                color: const Color(0xFF0A84FF),
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.0,
+                              ),
                             ),
                           ),
                         ],
@@ -142,7 +154,7 @@ class MemberDetailScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: const Color(0xFF141416),
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: Colors.white.withOpacity(0.04)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
               ),
               child: const Icon(
                 Icons.arrow_back,
@@ -169,7 +181,7 @@ class MemberDetailScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: const Color(0xFF141416),
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: Colors.white.withOpacity(0.04)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
               ),
               child: const Icon(
                 Icons.more_horiz,
@@ -202,7 +214,7 @@ class MemberDetailScreen extends StatelessWidget {
           height: 100,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: statusColor.withOpacity(0.5), width: 2),
+            border: Border.all(color: statusColor.withValues(alpha: 0.5), width: 2),
             image: DecorationImage(
               image: NetworkImage(avatarUrl),
               fit: BoxFit.cover,
@@ -232,9 +244,9 @@ class MemberDetailScreen extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            color: statusColor.withOpacity(0.1),
+            color: statusColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: statusColor.withOpacity(0.2)),
+            border: Border.all(color: statusColor.withValues(alpha: 0.2)),
           ),
           child: Text(
             status.toUpperCase(),
@@ -257,7 +269,7 @@ class MemberDetailScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFF141416),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withOpacity(0.04)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
       ),
       child: Column(
         children: [
@@ -302,7 +314,7 @@ class MemberDetailScreen extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.white.withOpacity(0.08)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -376,7 +388,7 @@ class MemberDetailScreen extends StatelessWidget {
   Widget _buildDivider() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Divider(color: Colors.white.withOpacity(0.04), height: 1),
+      child: Divider(color: Colors.white.withValues(alpha: 0.04), height: 1),
     );
   }
 
@@ -397,7 +409,7 @@ class MemberDetailScreen extends StatelessWidget {
             decoration: BoxDecoration(
               color: const Color(0xFF141416),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white.withOpacity(0.04)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -407,7 +419,7 @@ class MemberDetailScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.05),
+                        color: Colors.white.withValues(alpha: 0.05),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Icon(

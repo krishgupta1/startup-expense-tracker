@@ -20,37 +20,37 @@ class FundsOverviewScreen extends StatelessWidget {
               children: [
                 // Header
                 _buildHeader(context),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Main Funds Card
                 _buildMainFundsCard(),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Funding History
                 _buildFundingHistorySection(),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Cash Flow Breakdown
                 _buildCashFlowBreakdown(),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Bank Accounts
                 _buildBankAccountsSection(),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Funding Milestones
                 _buildFundingMilestones(),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Investment Recommendations
                 _buildInvestmentRecommendations(),
-                
+
                 const SizedBox(height: 40),
               ],
             ),
@@ -72,13 +72,9 @@ class FundsOverviewScreen extends StatelessWidget {
             decoration: BoxDecoration(
               color: const Color(0xFF141416),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white.withOpacity(0.08)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
             ),
-            child: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-              size: 20,
-            ),
+            child: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
           ),
         ),
         Column(
@@ -115,7 +111,7 @@ class FundsOverviewScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFF141416),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withOpacity(0.04)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,11 +119,16 @@ class FundsOverviewScreen extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF30D158).withOpacity(0.1),
+                  color: const Color(0xFF30D158).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(100),
-                  border: Border.all(color: const Color(0xFF30D158).withOpacity(0.3)),
+                  border: Border.all(
+                    color: const Color(0xFF30D158).withValues(alpha: 0.3),
+                  ),
                 ),
                 child: Text(
                   "HEALTHY",
@@ -183,9 +184,9 @@ class FundsOverviewScreen extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.03),
+              color: Colors.white.withValues(alpha: 0.03),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white.withOpacity(0.06)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,14 +236,34 @@ class FundsOverviewScreen extends StatelessWidget {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           ),
           child: Column(
             children: [
-              _buildFundingRow("Seed Round", "Jan 2024", "\$250,000", "Angel Investors"),
-              _buildFundingRow("Pre-Series A", "Jun 2024", "\$200,000", "VC Partners"),
-              _buildFundingRow("Bridge Loan", "Oct 2024", "\$50,000", "Strategic Partners"),
-              _buildFundingRow("Revenue", "Ongoing", "\$18,000", "Product Sales"),
+              _buildFundingRow(
+                "Seed Round",
+                "Jan 2024",
+                "\$250,000",
+                "Angel Investors",
+              ),
+              _buildFundingRow(
+                "Pre-Series A",
+                "Jun 2024",
+                "\$200,000",
+                "VC Partners",
+              ),
+              _buildFundingRow(
+                "Bridge Loan",
+                "Oct 2024",
+                "\$50,000",
+                "Strategic Partners",
+              ),
+              _buildFundingRow(
+                "Revenue",
+                "Ongoing",
+                "\$18,000",
+                "Product Sales",
+              ),
             ],
           ),
         ),
@@ -250,7 +271,12 @@ class FundsOverviewScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFundingRow(String round, String date, String amount, String source) {
+  Widget _buildFundingRow(
+    String round,
+    String date,
+    String amount,
+    String source,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
@@ -302,10 +328,7 @@ class FundsOverviewScreen extends StatelessWidget {
           ),
           if (round != "Revenue") ...[
             const SizedBox(height: 12),
-            Container(
-              height: 1,
-              color: Colors.white.withOpacity(0.08),
-            ),
+            Container(height: 1, color: Colors.white.withValues(alpha: 0.08)),
           ],
         ],
       ),
@@ -332,15 +355,27 @@ class FundsOverviewScreen extends StatelessWidget {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           ),
           child: Column(
             children: [
-              _buildCashFlowItem("Inflow", "\$8,500/month", const Color(0xFF30D158)),
+              _buildCashFlowItem(
+                "Inflow",
+                "\$8,500/month",
+                const Color(0xFF30D158),
+              ),
               const SizedBox(height: 16),
-              _buildCashFlowItem("Outflow", "-\$42,500/month", const Color(0xFFFF453A)),
+              _buildCashFlowItem(
+                "Outflow",
+                "-\$42,500/month",
+                const Color(0xFFFF453A),
+              ),
               const SizedBox(height: 16),
-              _buildCashFlowItem("Net Flow", "-\$34,000/month", const Color(0xFFFF9F0A)),
+              _buildCashFlowItem(
+                "Net Flow",
+                "-\$34,000/month",
+                const Color(0xFFFF9F0A),
+              ),
             ],
           ),
         ),
@@ -393,15 +428,30 @@ class FundsOverviewScreen extends StatelessWidget {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           ),
           child: Column(
             children: [
-              _buildBankAccount("Chase Business", "****4582", "\$382,000", "Primary"),
+              _buildBankAccount(
+                "Chase Business",
+                "****4582",
+                "\$382,000",
+                "Primary",
+              ),
               const SizedBox(height: 16),
-              _buildBankAccount("Wells Fargo", "****7821", "\$75,000", "Reserve"),
+              _buildBankAccount(
+                "Wells Fargo",
+                "****7821",
+                "\$75,000",
+                "Reserve",
+              ),
               const SizedBox(height: 16),
-              _buildBankAccount("Stripe", "****9234", "\$25,000", "Payment Processing"),
+              _buildBankAccount(
+                "Stripe",
+                "****9234",
+                "\$25,000",
+                "Payment Processing",
+              ),
             ],
           ),
         ),
@@ -409,14 +459,19 @@ class FundsOverviewScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBankAccount(String bank, String account, String balance, String type) {
+  Widget _buildBankAccount(
+    String bank,
+    String account,
+    String balance,
+    String type,
+  ) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.03),
+        color: Colors.white.withValues(alpha: 0.03),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.06)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
       ),
       child: Row(
         children: [
@@ -492,15 +547,30 @@ class FundsOverviewScreen extends StatelessWidget {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           ),
           child: Column(
             children: [
-              _buildMilestone("Series A Target", "\$2,000,000", "Q2 2025", "In Progress"),
+              _buildMilestone(
+                "Series A Target",
+                "\$2,000,000",
+                "Q2 2025",
+                "In Progress",
+              ),
               const SizedBox(height: 16),
-              _buildMilestone("Break-even Revenue", "\$50,000/mo", "Q4 2025", "On Track"),
+              _buildMilestone(
+                "Break-even Revenue",
+                "\$50,000/mo",
+                "Q4 2025",
+                "On Track",
+              ),
               const SizedBox(height: 16),
-              _buildMilestone("Team Expansion", "15 employees", "Q1 2025", "Completed"),
+              _buildMilestone(
+                "Team Expansion",
+                "15 employees",
+                "Q1 2025",
+                "Completed",
+              ),
             ],
           ),
         ),
@@ -508,20 +578,24 @@ class FundsOverviewScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMilestone(String title, String target, String timeline, String status) {
-    Color statusColor = status == "Completed" ? const Color(0xFF30D158) : 
-                       status == "On Track" ? const Color(0xFF30D158) : 
-                       const Color(0xFFFF9F0A);
-    
+  Widget _buildMilestone(
+    String title,
+    String target,
+    String timeline,
+    String status,
+  ) {
+    Color statusColor = status == "Completed"
+        ? const Color(0xFF30D158)
+        : status == "On Track"
+        ? const Color(0xFF30D158)
+        : const Color(0xFFFF9F0A);
+
     return Row(
       children: [
         Container(
           width: 8,
           height: 8,
-          decoration: BoxDecoration(
-            color: statusColor,
-            shape: BoxShape.circle,
-          ),
+          decoration: BoxDecoration(color: statusColor, shape: BoxShape.circle),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -551,9 +625,9 @@ class FundsOverviewScreen extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
-            color: statusColor.withOpacity(0.1),
+            color: statusColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(100),
-            border: Border.all(color: statusColor.withOpacity(0.3)),
+            border: Border.all(color: statusColor.withValues(alpha: 0.3)),
           ),
           child: Text(
             status,
@@ -587,7 +661,7 @@ class FundsOverviewScreen extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.white.withOpacity(0.08)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(

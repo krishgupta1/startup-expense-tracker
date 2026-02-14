@@ -95,7 +95,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                         decoration: BoxDecoration(
                           color: const Color(0xFF141416),
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.white.withOpacity(0.04)),
+                          border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
                         ),
                         child: Column(
                           children: [
@@ -105,7 +105,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
                               children: _colors.map((c) => _buildColorOption(c)).toList(),
                             ),
                             const SizedBox(height: 24),
-                            Divider(color: Colors.white.withOpacity(0.04), height: 1),
+                            Divider(color: Colors.white.withValues(alpha: 0.04), height: 1),
                             const SizedBox(height: 24),
                             // Icon Picker
                             Row(
@@ -164,7 +164,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
               decoration: BoxDecoration(
                 color: const Color(0xFF141416),
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: Colors.white.withOpacity(0.04)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
               ),
               child: const Icon(Icons.close, color: Colors.white, size: 20),
             ),
@@ -194,7 +194,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           ),
           child: TextField(
             keyboardType: isNumber ? TextInputType.number : TextInputType.text,
@@ -223,7 +223,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: color.withOpacity(0.2),
+          color: color.withValues(alpha: 0.2),
           shape: BoxShape.circle,
           border: isSelected 
               ? Border.all(color: color, width: 2)
@@ -256,7 +256,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
           borderRadius: BorderRadius.circular(12),
           border: isSelected 
               ? null
-              : Border.all(color: Colors.white.withOpacity(0.1)),
+              : Border.all(color: Colors.white.withValues(alpha: 0.1)),
         ),
         child: Icon(
           icon, 
@@ -286,7 +286,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
             height: 48,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.white.withOpacity(0.1)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
             ),
             child: const Icon(Icons.search, color: Colors.white, size: 20),
           ),
@@ -309,7 +309,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
       child: isSelected 
           ? Container(
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
+                color: Colors.black.withValues(alpha: 0.5),
                 shape: BoxShape.circle,
               ),
               child: const Icon(Icons.check, color: Colors.white, size: 18),
@@ -335,7 +335,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: const Color(0xFF09090B),
-        border: Border(top: BorderSide(color: Colors.white.withOpacity(0.05))),
+        border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
       ),
       child: SizedBox(
         width: double.infinity,

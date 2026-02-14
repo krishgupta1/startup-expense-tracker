@@ -128,7 +128,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                         decoration: BoxDecoration(
                           color: const Color(0xFF141416),
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.white.withOpacity(0.04)),
+                          border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
                         ),
                         child: Column(
                           children: [
@@ -138,7 +138,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                               children: _colors.map((c) => _buildColorOption(c)).toList(),
                             ),
                             const SizedBox(height: 24),
-                            Divider(color: Colors.white.withOpacity(0.04), height: 1),
+                            Divider(color: Colors.white.withValues(alpha: 0.04), height: 1),
                             const SizedBox(height: 24),
                             // Icon Picker
                             Row(
@@ -184,7 +184,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
               decoration: BoxDecoration(
                 color: const Color(0xFF141416),
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: Colors.white.withOpacity(0.04)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
               ),
               child: const Icon(Icons.close, color: Colors.white, size: 20),
             ),
@@ -210,14 +210,14 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF141416),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.04)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: const Color(0xFF30D158).withOpacity(0.15),
+              color: const Color(0xFF30D158).withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Icon(Icons.attach_money, color: Color(0xFF30D158), size: 20),
@@ -266,7 +266,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           ),
           child: TextField(
             controller: controller,
@@ -294,7 +294,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: color.withOpacity(0.2),
+          color: color.withValues(alpha: 0.2),
           shape: BoxShape.circle,
           border: isSelected 
               ? Border.all(color: color, width: 2)
@@ -327,7 +327,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
           borderRadius: BorderRadius.circular(12),
           border: isSelected 
               ? null
-              : Border.all(color: Colors.white.withOpacity(0.1)),
+              : Border.all(color: Colors.white.withValues(alpha: 0.1)),
         ),
         child: Icon(
           icon, 
@@ -348,16 +348,16 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
           width: double.infinity,
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: const Color(0xFFFF453A).withOpacity(0.05),
+            color: const Color(0xFFFF453A).withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: const Color(0xFFFF453A).withOpacity(0.2)),
+            border: Border.all(color: const Color(0xFFFF453A).withValues(alpha: 0.2)),
           ),
           child: Row(
             children: [
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFF453A).withOpacity(0.1),
+                  color: const Color(0xFFFF453A).withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(Icons.warning_amber_rounded, color: Color(0xFFFF453A), size: 20),
@@ -379,7 +379,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                     Text(
                       "This action cannot be undone.",
                       style: GoogleFonts.inter(
-                        color: const Color(0xFFFF453A).withOpacity(0.6),
+                        color: const Color(0xFFFF453A).withValues(alpha: 0.6),
                         fontSize: 12,
                       ),
                     ),
@@ -421,7 +421,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: const Color(0xFF09090B),
-        border: Border(top: BorderSide(color: Colors.white.withOpacity(0.05))),
+        border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
       ),
       child: SizedBox(
         width: double.infinity,

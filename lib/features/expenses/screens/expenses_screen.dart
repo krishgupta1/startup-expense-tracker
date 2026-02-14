@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'add_expense_screen.dart';
 import 'search_expense_screen.dart';
 import 'expense_details_screen.dart';
+import 'scan_expense_screen.dart';
+import 'report_expense_screen.dart';
 
 class ExpensesScreen extends StatefulWidget {
   const ExpensesScreen({super.key});
@@ -175,7 +177,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
         color: const Color(0xFF141416), // Solid Matte Grey
         borderRadius: BorderRadius.circular(16),
         // No Shadow, just a barely visible border for definition
-        border: Border.all(color: Colors.white.withOpacity(0.04)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -255,8 +257,31 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
           },
           child: _buildFlatActionButton("Search", Icons.search_rounded),
         ),
-        _buildFlatActionButton("Scan", Icons.qr_code_rounded),
-        _buildFlatActionButton("Report", Icons.insert_chart_outlined_rounded),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ScanExpenseScreen(),
+              ),
+            );
+          },
+          child: _buildFlatActionButton("Scan", Icons.qr_code_rounded),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ReportExpenseScreen(),
+              ),
+            );
+          },
+          child: _buildFlatActionButton(
+            "Report",
+            Icons.insert_chart_outlined_rounded,
+          ),
+        ),
       ],
     );
   }
@@ -270,7 +295,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           ),
           child: Icon(icon, color: Colors.white, size: 24),
         ),
@@ -293,7 +318,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         // Transparent background, only border
-        border: Border.all(color: Colors.white.withOpacity(0.08)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -342,71 +367,89 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
       children: transactions.map((tx) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 20),
-          child: Row(
-            children: [
-              // Minimal Icon Placeholder (No container)
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF141416),
-                  borderRadius: BorderRadius.circular(10),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ExpenseDetailsScreen(),
                 ),
-                child: const Icon(
-                  Icons.receipt,
-                  color: Colors.white38,
-                  size: 18,
-                ),
-              ),
-              const SizedBox(width: 16),
+              );
+            },
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ExpenseDetailsScreen(),
+                    ),
+                  );
+                },
+                splashColor: Colors.white.withValues(alpha: 0.1),
+                highlightColor: Colors.white.withValues(alpha: 0.05),
+                borderRadius: BorderRadius.circular(12),
+                child: Row(
+                  children: [
+                    // Minimal Icon Placeholder (No container)
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF141416),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(
+                        Icons.receipt,
+                        color: Colors.white38,
+                        size: 18,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
 
-              // Info - Make only this part clickable
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ExpenseDetailsScreen(),
+                    // Info - Make entire row clickable
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            tx["title"]!,
+                            style: GoogleFonts.inter(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            tx["cat"]!,
+                            style: GoogleFonts.inter(
+                              color: Colors.white38,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        tx["title"]!,
-                        style: GoogleFonts.inter(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Text(
-                        tx["cat"]!,
-                        style: GoogleFonts.inter(
-                          color: Colors.white38,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                    ),
 
-              // Amount - Not clickable
-              Text(
-                "-\$${tx["amt"]}",
-                style: GoogleFonts.inter(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  fontFeatures: [
-                    const FontFeature.tabularFigures(),
-                  ], // Aligns numbers
+                    // Amount - Not clickable
+                    Text(
+                      "-\$${tx["amt"]}",
+                      style: GoogleFonts.inter(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        fontFeatures: [
+                          const FontFeature.tabularFigures(),
+                        ], // Aligns numbers
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
         );
       }).toList(),

@@ -162,7 +162,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
               decoration: BoxDecoration(
                 color: const Color(0xFF141416),
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: Colors.white.withOpacity(0.04)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
               ),
               child: const Icon(Icons.close, color: Colors.white, size: 20),
             ),
@@ -190,7 +190,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             shape: BoxShape.circle,
-            border: Border.all(color: Colors.white.withOpacity(0.08), width: 1),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.08), width: 1),
           ),
           child: Stack(
             alignment: Alignment.center,
@@ -234,7 +234,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF141416),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.04)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
       ),
       child: TextField(
         style: GoogleFonts.inter(color: Colors.white, fontSize: 15),
@@ -258,14 +258,14 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF141416),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.04)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: const Color(0xFF30D158).withOpacity(0.15),
+              color: const Color(0xFF30D158).withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Icon(
@@ -377,7 +377,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           ),
           child: TextField(
             readOnly: true,
@@ -496,7 +496,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: const Color(0xFF09090B),
-        border: Border(top: BorderSide(color: Colors.white.withOpacity(0.05))),
+        border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
       ),
       child: SizedBox(
         width: double.infinity,
