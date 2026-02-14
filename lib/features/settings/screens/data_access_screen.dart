@@ -41,14 +41,14 @@ class _DataAccessScreenState extends State<DataAccessScreen> {
                   decoration: BoxDecoration(
                     color: const Color(0xFF141416),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.white.withOpacity(0.04)),
+                    border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
                   ),
                   child: Row(
                     children: [
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF0A84FF).withOpacity(0.1),
+                          color: const Color(0xFF0A84FF).withValues(alpha: 0.1),
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(Icons.support_agent, color: Color(0xFF0A84FF), size: 20),
@@ -73,7 +73,7 @@ class _DataAccessScreenState extends State<DataAccessScreen> {
                         value: _allowSupportAccess,
                         onChanged: (val) => setState(() => _allowSupportAccess = val),
                         activeThumbColor: const Color(0xFF0A84FF),
-                        activeTrackColor: const Color(0xFF0A84FF).withOpacity(0.3),
+                        activeTrackColor: const Color(0xFF0A84FF).withValues(alpha: 0.3),
                         inactiveThumbColor: Colors.white54,
                         inactiveTrackColor: Colors.white10,
                       ),
@@ -89,7 +89,7 @@ class _DataAccessScreenState extends State<DataAccessScreen> {
                   decoration: BoxDecoration(
                     color: const Color(0xFF141416),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.white.withOpacity(0.04)),
+                    border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
                   ),
                   child: Column(
                     children: _teamMembers.asMap().entries.map((entry) {
@@ -104,9 +104,9 @@ class _DataAccessScreenState extends State<DataAccessScreen> {
                             trailing: Container(
                               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                               decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.05),
+                                color: Colors.white.withValues(alpha: 0.05),
                                 borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: Colors.white.withOpacity(0.1)),
+                                border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
                               ),
                               child: Text(
                                 member['role'],
@@ -115,7 +115,7 @@ class _DataAccessScreenState extends State<DataAccessScreen> {
                             ),
                           ),
                           if (idx != _teamMembers.length - 1)
-                            Divider(height: 1, color: Colors.white.withOpacity(0.04), indent: 20, endIndent: 20),
+                            Divider(height: 1, color: Colors.white.withValues(alpha: 0.04), indent: 20, endIndent: 20),
                         ],
                       );
                     }).toList(),
@@ -139,7 +139,7 @@ class _DataAccessScreenState extends State<DataAccessScreen> {
             decoration: BoxDecoration(
               color: const Color(0xFF141416),
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: Colors.white.withOpacity(0.04)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
             ),
             child: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
           ),

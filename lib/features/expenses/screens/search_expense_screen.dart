@@ -39,6 +39,7 @@ class _SearchExpenseScreenState extends State<SearchExpenseScreen> {
     'office': 'Office',
     'marketing': 'Marketing',
     'meals': 'Meals',
+    'transport': 'Transport',
   };
 
   String _selectedYear = "2024";
@@ -109,14 +110,16 @@ class _SearchExpenseScreenState extends State<SearchExpenseScreen> {
 
       // Category Filter
       final matchesCategory =
-          _selectedCategory == "All" || tx["cat"] == _selectedCategory;
+          _selectedCategory == "all" ||
+          tx["cat"] == categories[_selectedCategory];
 
       // Year Filter
       final matchesYear = dateStr.contains(_selectedYear);
 
-      // Month Filter
+      // Month Filter - Convert month key to full name for comparison
+      final monthName = _selectedMonth == "all" ? "" : months[_selectedMonth];
       final matchesMonth =
-          _selectedMonth == "All" || dateStr.startsWith(_selectedMonth);
+          _selectedMonth == "all" || dateStr.startsWith(monthName ?? "");
 
       return matchesQuery && matchesCategory && matchesYear && matchesMonth;
     }).toList();
@@ -156,7 +159,7 @@ class _SearchExpenseScreenState extends State<SearchExpenseScreen> {
                               color: const Color(0xFF141416),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: Colors.white.withOpacity(0.04),
+                                color: Colors.white.withValues(alpha: 0.04),
                               ),
                             ),
                             child: const Icon(
@@ -177,7 +180,7 @@ class _SearchExpenseScreenState extends State<SearchExpenseScreen> {
                         color: const Color(0xFF141416),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: Colors.white.withOpacity(0.04),
+                          color: Colors.white.withValues(alpha: 0.04),
                         ),
                       ),
                       child: TextField(
@@ -243,7 +246,8 @@ class _SearchExpenseScreenState extends State<SearchExpenseScreen> {
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   itemCount: categories.length,
-                  separatorBuilder: (_, __) => const SizedBox(width: 8),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(width: 8),
                   itemBuilder: (context, index) {
                     final cat = categories.keys.toList()[index];
                     final isSelected = _selectedCategory == cat;
@@ -262,7 +266,7 @@ class _SearchExpenseScreenState extends State<SearchExpenseScreen> {
                           border: Border.all(
                             color: isSelected
                                 ? Colors.white
-                                : Colors.white.withOpacity(0.04),
+                                : Colors.white.withValues(alpha: 0.04),
                           ),
                         ),
                         child: Text(
@@ -316,7 +320,7 @@ class _SearchExpenseScreenState extends State<SearchExpenseScreen> {
         decoration: BoxDecoration(
           color: const Color(0xFF141416),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white.withOpacity(0.1)),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
         ),
         child: Row(
           children: [
@@ -350,7 +354,7 @@ class _SearchExpenseScreenState extends State<SearchExpenseScreen> {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: items.length,
-      separatorBuilder: (_, __) => const SizedBox(width: 8),
+      separatorBuilder: (context, index) => const SizedBox(width: 8),
       itemBuilder: (context, index) {
         // Only showing first 4 months for demo space in horizontal list logic
         // In real app, remove shrinkWrap/physics to scroll all months
@@ -366,13 +370,13 @@ class _SearchExpenseScreenState extends State<SearchExpenseScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
             decoration: BoxDecoration(
               color: isSelected
-                  ? const Color(0xFF30D158).withOpacity(0.15)
+                  ? const Color(0xFF30D158).withValues(alpha: 0.15)
                   : const Color(0xFF141416),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: isSelected
                     ? const Color(0xFF30D158)
-                    : Colors.white.withOpacity(0.04),
+                    : Colors.white.withValues(alpha: 0.04),
               ),
             ),
             child: Text(
@@ -407,7 +411,7 @@ class _SearchExpenseScreenState extends State<SearchExpenseScreen> {
               decoration: BoxDecoration(
                 color: const Color(0xFF141416),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.white.withOpacity(0.04)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
               ),
               child: const Icon(Icons.receipt, color: Colors.white38, size: 20),
             ),

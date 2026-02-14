@@ -28,7 +28,6 @@ class _CompanySetupScreenState extends State<CompanySetupScreen> {
   // Step 2: Legal & Loc
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _workDescController = TextEditingController();
-  String _companyType = "sole_proprietorship";
 
   final companyTypes = {
     'sole_proprietorship': 'Sole Proprietorship',
@@ -166,7 +165,6 @@ class _CompanySetupScreenState extends State<CompanySetupScreen> {
               companyTypes[value]!,
               style: GoogleFonts.inter(color: Colors.white, fontSize: 16),
             ),
-            onChanged: (val) => setState(() => _companyType = val!),
           ),
         ),
         const SizedBox(height: 32),
@@ -288,7 +286,7 @@ class _CompanySetupScreenState extends State<CompanySetupScreen> {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 16),
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.white.withOpacity(0.1)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
@@ -376,7 +374,7 @@ class _CompanySetupScreenState extends State<CompanySetupScreen> {
                   border: Border.all(
                     color: isSelected
                         ? Colors.white
-                        : Colors.white.withOpacity(0.1),
+                        : Colors.white.withValues(alpha: 0.1),
                   ),
                 ),
                 child: Text(
@@ -408,7 +406,7 @@ class _CompanySetupScreenState extends State<CompanySetupScreen> {
               decoration: BoxDecoration(
                 color: const Color(0xFF141416),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.white.withOpacity(0.04)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -575,7 +573,7 @@ class _CompanySetupScreenState extends State<CompanySetupScreen> {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            const Color(0xFF09090B).withOpacity(0.0),
+            const Color(0xFF09090B).withValues(alpha: 0.0),
             const Color(0xFF09090B),
           ],
         ),
@@ -656,7 +654,7 @@ class _CompanySetupScreenState extends State<CompanySetupScreen> {
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.1)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
       ),
       child: TextField(
         controller: controller,
@@ -679,7 +677,7 @@ class _CompanySetupScreenState extends State<CompanySetupScreen> {
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.1)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
       ),
       child: TextField(
         controller: controller,

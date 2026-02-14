@@ -96,7 +96,7 @@ class _EditMemberScreenState extends State<EditMemberScreen> {
                   height: 100,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.black.withOpacity(0.5),
+                    color: Colors.black.withValues(alpha: 0.5),
                   ),
                   child: const Icon(Icons.camera_alt, color: Colors.white),
                 ),
@@ -229,7 +229,7 @@ class _EditMemberScreenState extends State<EditMemberScreen> {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           ),
           child: TextField(
             readOnly: true,

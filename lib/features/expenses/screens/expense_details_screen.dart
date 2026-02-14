@@ -70,12 +70,7 @@ class ExpenseDetailsScreen extends StatelessWidget {
 
                       const SizedBox(height: 40),
 
-                      // AI Suggestion Pill
-                      _buildAIPill(),
-
-                      const SizedBox(height: 40),
-
-                      // Details Grid
+                      // --- DETAILS SECTION ---
                       _buildSectionTitle("DETAILS"),
                       const SizedBox(height: 16),
                       Container(
@@ -84,7 +79,7 @@ class ExpenseDetailsScreen extends StatelessWidget {
                           color: const Color(0xFF141416),
                           borderRadius: BorderRadius.circular(24),
                           border: Border.all(
-                            color: Colors.white.withOpacity(0.04),
+                            color: Colors.white.withValues(alpha: 0.04),
                           ),
                         ),
                         child: Column(
@@ -148,7 +143,7 @@ class ExpenseDetailsScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: const Color(0xFF141416),
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: Colors.white.withOpacity(0.04)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
               ),
               child: const Icon(
                 Icons.arrow_back,
@@ -175,7 +170,7 @@ class ExpenseDetailsScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: const Color(0xFF141416),
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: Colors.white.withOpacity(0.04)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
               ),
               child: const Icon(
                 Icons.more_horiz,
@@ -193,9 +188,9 @@ class ExpenseDetailsScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05),
+        color: Colors.white.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -209,51 +204,6 @@ class ExpenseDetailsScreen extends StatelessWidget {
               fontSize: 11,
               fontWeight: FontWeight.bold,
               letterSpacing: 1.0,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAIPill() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        // Transparent with border
-        border: Border.all(color: Colors.white.withOpacity(0.08)),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(
-                Icons.auto_awesome,
-                color: Color(0xFF0A84FF),
-                size: 16,
-              ),
-              const SizedBox(width: 12),
-              Text(
-                "AI INSIGHT",
-                style: GoogleFonts.inter(
-                  color: const Color(0xFF0A84FF), // Blue accent for AI
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.0,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            "This expense is 15% higher than your average for Infrastructure. Consider reviewing unused instances.",
-            style: GoogleFonts.inter(
-              color: Colors.white.withOpacity(0.9),
-              fontSize: 14,
-              height: 1.5,
             ),
           ),
         ],
@@ -314,7 +264,7 @@ class ExpenseDetailsScreen extends StatelessWidget {
           height: 28,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: Colors.white.withOpacity(0.2)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
             image: DecorationImage(
               image: NetworkImage(imageUrl),
               fit: BoxFit.cover,
@@ -328,7 +278,7 @@ class ExpenseDetailsScreen extends StatelessWidget {
   Widget _buildDivider() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Divider(color: Colors.white.withOpacity(0.04), height: 1),
+      child: Divider(color: Colors.white.withValues(alpha: 0.04), height: 1),
     );
   }
 
@@ -339,7 +289,7 @@ class ExpenseDetailsScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFF141416),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.04)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
       ),
       child: Row(
         children: [
@@ -347,7 +297,7 @@ class ExpenseDetailsScreen extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.05),
+              color: Colors.white.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(

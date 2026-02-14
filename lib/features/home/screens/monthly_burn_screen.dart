@@ -63,12 +63,7 @@ class _MonthlyBurnScreenState extends State<MonthlyBurnScreen> {
 
                 const SizedBox(height: 32),
 
-                // 8. Burn Optimization (Code A)
-                _buildBurnOptimizationSection(),
-
-                const SizedBox(height: 32),
-
-                // 9. Forecast Comparison (Code A)
+                // 8. Forecast Comparison (Code A)
                 _buildForecastComparisonSection(),
 
                 const SizedBox(height: 40),
@@ -93,7 +88,7 @@ class _MonthlyBurnScreenState extends State<MonthlyBurnScreen> {
             decoration: BoxDecoration(
               color: const Color(0xFF141416),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white.withOpacity(0.08)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
             ),
             child: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
           ),
@@ -133,7 +128,7 @@ class _MonthlyBurnScreenState extends State<MonthlyBurnScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF141416),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.04)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -147,7 +142,7 @@ class _MonthlyBurnScreenState extends State<MonthlyBurnScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? Colors.white.withOpacity(0.1)
+                      ? Colors.white.withValues(alpha: 0.1)
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -176,7 +171,7 @@ class _MonthlyBurnScreenState extends State<MonthlyBurnScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF141416),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withOpacity(0.04)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,10 +184,10 @@ class _MonthlyBurnScreenState extends State<MonthlyBurnScreen> {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFF9F0A).withOpacity(0.1),
+                  color: const Color(0xFFFF9F0A).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(100),
                   border: Border.all(
-                    color: const Color(0xFFFF9F0A).withOpacity(0.3),
+                    color: const Color(0xFFFF9F0A).withValues(alpha: 0.3),
                   ),
                 ),
                 child: Text(
@@ -212,10 +207,10 @@ class _MonthlyBurnScreenState extends State<MonthlyBurnScreen> {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF30D158).withOpacity(0.1),
+                  color: const Color(0xFF30D158).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(100),
                   border: Border.all(
-                    color: const Color(0xFF30D158).withOpacity(0.3),
+                    color: const Color(0xFF30D158).withValues(alpha: 0.3),
                   ),
                 ),
                 child: Text(
@@ -263,9 +258,9 @@ class _MonthlyBurnScreenState extends State<MonthlyBurnScreen> {
             width: double.infinity,
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.03),
+              color: Colors.white.withValues(alpha: 0.03),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white.withOpacity(0.06)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -316,7 +311,7 @@ class _MonthlyBurnScreenState extends State<MonthlyBurnScreen> {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           ),
           child: SizedBox(
             height: 160,
@@ -384,7 +379,7 @@ class _MonthlyBurnScreenState extends State<MonthlyBurnScreen> {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           ),
           child: Column(
             children: [
@@ -451,7 +446,7 @@ class _MonthlyBurnScreenState extends State<MonthlyBurnScreen> {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           ),
           child: Column(
             children: teams.map((team) {
@@ -598,7 +593,7 @@ class _MonthlyBurnScreenState extends State<MonthlyBurnScreen> {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           ),
           child: Column(
             children: [
@@ -682,121 +677,6 @@ class _MonthlyBurnScreenState extends State<MonthlyBurnScreen> {
     );
   }
 
-  // --- Burn Optimization (Code A) ---
-  Widget _buildBurnOptimizationSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Optimization Opportunities",
-          style: GoogleFonts.inter(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            letterSpacing: -0.5,
-          ),
-        ),
-        const SizedBox(height: 20),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.white.withOpacity(0.08)),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildOptimizationItem(
-                "AWS Reserved Instances",
-                "Save \$1,200/month by committing to 1-year plans",
-                "\$14,400/year",
-                const Color(0xFF30D158),
-              ),
-              const SizedBox(height: 16),
-              _buildOptimizationItem(
-                "Marketing ROI Review",
-                "Pause underperforming campaigns (\$800/month)",
-                "\$9,600/year",
-                const Color(0xFFFF9F0A),
-              ),
-              const SizedBox(height: 16),
-              _buildOptimizationItem(
-                "Tool Consolidation",
-                "Replace HubSpot with cheaper alternatives",
-                "\$600/month",
-                const Color(0xFF00BFA5),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildOptimizationItem(
-    String title,
-    String description,
-    String savings,
-    Color color,
-  ) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.03),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.06)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  title,
-                  style: GoogleFonts.inter(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(100),
-                  border: Border.all(color: color.withOpacity(0.3)),
-                ),
-                child: Text(
-                  savings,
-                  style: GoogleFonts.inter(
-                    color: color,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            description,
-            style: GoogleFonts.inter(
-              color: Colors.white38,
-              fontSize: 12,
-              height: 1.4,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   // --- Forecast Comparison (Code A) ---
   Widget _buildForecastComparisonSection() {
     return Column(
@@ -818,7 +698,7 @@ class _MonthlyBurnScreenState extends State<MonthlyBurnScreen> {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           ),
           child: Column(
             children: [
@@ -858,7 +738,7 @@ class _MonthlyBurnScreenState extends State<MonthlyBurnScreen> {
                 false,
               ),
               const SizedBox(height: 16),
-              Container(height: 1, color: Colors.white.withOpacity(0.1)),
+              Container(height: 1, color: Colors.white.withValues(alpha: 0.1)),
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

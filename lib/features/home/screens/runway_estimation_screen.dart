@@ -42,11 +42,6 @@ class RunwayEstimationScreen extends StatelessWidget {
                 // Risk Factors
                 _buildRiskFactorsSection(),
 
-                const SizedBox(height: 32),
-
-                // Recommendations
-                _buildRecommendationsSection(),
-
                 const SizedBox(height: 40),
               ],
             ),
@@ -68,7 +63,7 @@ class RunwayEstimationScreen extends StatelessWidget {
             decoration: BoxDecoration(
               color: const Color(0xFF141416),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white.withOpacity(0.08)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
             ),
             child: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
           ),
@@ -107,7 +102,7 @@ class RunwayEstimationScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFF141416),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withOpacity(0.04)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,10 +115,10 @@ class RunwayEstimationScreen extends StatelessWidget {
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF30D158).withOpacity(0.1),
+                  color: const Color(0xFF30D158).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(100),
                   border: Border.all(
-                    color: const Color(0xFF30D158).withOpacity(0.3),
+                    color: const Color(0xFF30D158).withValues(alpha: 0.3),
                   ),
                 ),
                 child: Text(
@@ -180,9 +175,9 @@ class RunwayEstimationScreen extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.03),
+              color: Colors.white.withValues(alpha: 0.03),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white.withOpacity(0.06)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -277,12 +272,12 @@ class RunwayEstimationScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFF141416),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.04)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: color.withOpacity(0.8), size: 20),
+          Icon(icon, color: color.withValues(alpha: 0.8), size: 20),
           const SizedBox(height: 16),
           Text(
             value,
@@ -327,7 +322,7 @@ class RunwayEstimationScreen extends StatelessWidget {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           ),
           child: Column(
             children: [
@@ -437,7 +432,7 @@ class RunwayEstimationScreen extends StatelessWidget {
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white.withOpacity(0.04)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
           ),
           child: Column(
             children: [
