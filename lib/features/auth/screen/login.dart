@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:startup_expense_tracker/features/auth/screen/signup.dart';
 import 'package:startup_expense_tracker/features/auth/screen/forget_password.dart';
-import 'package:startup_expense_tracker/features/navigation/screens/navigation_wrapper.dart';
+import 'package:startup_expense_tracker/features/navigation/screens/main_navigation_wrapper.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -218,7 +218,9 @@ class _LoginScreenState extends State<LoginScreen> {
           // Perform Login Logic
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const NavigationWrapper()),
+            MaterialPageRoute(
+              builder: (context) => const MainNavigationWrapper(),
+            ),
           );
         },
         style: ElevatedButton.styleFrom(
@@ -275,7 +277,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => const NavigationWrapper(),
+                builder: (context) => const MainNavigationWrapper(),
               ),
             );
           },
