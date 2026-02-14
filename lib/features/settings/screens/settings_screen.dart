@@ -14,143 +14,140 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF09090B), // Deep Matte Black
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: SafeArea(
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            child: Column(
-              children: [
-                // 1. Header (Back & Title)
-                _buildHeader(context),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: SafeArea(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: Column(
+            children: [
+              // 1. Header (Back & Title)
+              _buildHeader(context),
 
-                const SizedBox(height: 32),
+              const SizedBox(height: 32),
 
-                // 2. Profile Section
-                _buildProfileSection(context),
+              // 2. Profile Section
+              _buildProfileSection(context),
 
-                const SizedBox(height: 40),
+              const SizedBox(height: 40),
 
-                // 3. Company & Statements
-                _buildSectionLabel("ORGANIZATION"),
-                _buildSettingsGroup([
-                  _buildTile(
-                    icon: Icons.business,
-                    title: "Company Details",
-                    subtitle: "Manage address, funding, and structure",
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CompanyDetailsScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                  _buildDivider(),
-                  _buildTile(
-                    icon: Icons.description_outlined,
-                    title: "Statements",
-                    subtitle: "Financial reports and exports",
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const StatementsScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                ]),
-
-                const SizedBox(height: 32),
-
-                // 4. Security & Data
-                _buildSectionLabel("SECURITY & PRIVACY"),
-                _buildSettingsGroup([
-                  _buildTile(
-                    icon: Icons.lock_outline,
-                    title: "Change Password",
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ChangePasswordScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                  _buildDivider(),
-                  _buildTile(
-                    icon: Icons.admin_panel_settings_outlined,
-                    title: "Data Access Control",
-                    subtitle: "Manage team permissions",
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const DataAccessScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                  _buildDivider(),
-                  _buildTile(
-                    icon: Icons.security,
-                    title: "Privacy Assurances",
-                    subtitle: "How we protect your financial data",
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const PrivacyAssurancesScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                ]),
-
-                const SizedBox(height: 32),
-
-                // 5. Support
-                _buildSectionLabel("SUPPORT"),
-                _buildSettingsGroup([
-                  _buildTile(
-                    icon: Icons.star_outline,
-                    title: "Rate us on Play Store",
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const RateUsScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                ]),
-
-                const SizedBox(height: 40),
-
-                // 6. Logout
-                _buildLogoutButton(),
-
-                const SizedBox(height: 24),
-
-                // 7. Version
-                Text(
-                  "Version 1.0.2 (Build 402)",
-                  style: GoogleFonts.inter(
-                    color: Colors.white24,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
+              // 3. Company & Statements
+              _buildSectionLabel("ORGANIZATION"),
+              _buildSettingsGroup([
+                _buildTile(
+                  icon: Icons.business,
+                  title: "Company Details",
+                  subtitle: "Manage address, funding, and structure",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CompanyDetailsScreen(),
+                      ),
+                    );
+                  },
                 ),
-                const SizedBox(height: 24),
-              ],
-            ),
+                _buildDivider(),
+                _buildTile(
+                  icon: Icons.description_outlined,
+                  title: "Statements",
+                  subtitle: "Financial reports and exports",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const StatementsScreen(),
+                      ),
+                    );
+                  },
+                ),
+              ]),
+
+              const SizedBox(height: 32),
+
+              // 4. Security & Data
+              _buildSectionLabel("SECURITY & PRIVACY"),
+              _buildSettingsGroup([
+                _buildTile(
+                  icon: Icons.lock_outline,
+                  title: "Change Password",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ChangePasswordScreen(),
+                      ),
+                    );
+                  },
+                ),
+                _buildDivider(),
+                _buildTile(
+                  icon: Icons.admin_panel_settings_outlined,
+                  title: "Data Access Control",
+                  subtitle: "Manage team permissions",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DataAccessScreen(),
+                      ),
+                    );
+                  },
+                ),
+                _buildDivider(),
+                _buildTile(
+                  icon: Icons.security,
+                  title: "Privacy Assurances",
+                  subtitle: "How we protect your financial data",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PrivacyAssurancesScreen(),
+                      ),
+                    );
+                  },
+                ),
+              ]),
+
+              const SizedBox(height: 32),
+
+              // 5. Support
+              _buildSectionLabel("SUPPORT"),
+              _buildSettingsGroup([
+                _buildTile(
+                  icon: Icons.star_outline,
+                  title: "Rate us on Play Store",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RateUsScreen(),
+                      ),
+                    );
+                  },
+                ),
+              ]),
+
+              const SizedBox(height: 40),
+
+              // 6. Logout
+              _buildLogoutButton(),
+
+              const SizedBox(height: 24),
+
+              // 7. Version
+              Text(
+                "Version 1.0.2 (Build 402)",
+                style: GoogleFonts.inter(
+                  color: Colors.white24,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
           ),
         ),
       ),

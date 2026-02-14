@@ -1,3 +1,4 @@
+import 'dart:ui'; // Required for FontFeature
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -225,6 +226,7 @@ class RunwayEstimationScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
+        // Row 1: Balance and Burn
         Row(
           children: [
             Expanded(
@@ -247,17 +249,9 @@ class RunwayEstimationScreen extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
+        // Row 2: ONLY Net Burn (Monthly Revenue removed)
         Row(
           children: [
-            Expanded(
-              child: _buildMetricCard(
-                "Monthly Revenue",
-                "\$8,500",
-                Icons.trending_up_outlined,
-                const Color(0xFF30D158),
-              ),
-            ),
-            const SizedBox(width: 16),
             Expanded(
               child: _buildMetricCard(
                 "Net Burn",
@@ -329,7 +323,7 @@ class RunwayEstimationScreen extends StatelessWidget {
         const SizedBox(height: 20),
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
             color: const Color(0xFF141416),
             borderRadius: BorderRadius.circular(20),
@@ -337,12 +331,17 @@ class RunwayEstimationScreen extends StatelessWidget {
           ),
           child: Column(
             children: [
-              _buildProjectionRow("Jul 2025", "\$447,500", "10.5 months"),
-              _buildProjectionRow("Aug 2025", "\$413,500", "9.7 months"),
-              _buildProjectionRow("Sep 2025", "\$379,500", "8.9 months"),
-              _buildProjectionRow("Oct 2025", "\$345,500", "8.1 months"),
-              _buildProjectionRow("Nov 2025", "\$311,500", "7.3 months"),
-              _buildProjectionRow("Dec 2025", "\$277,500", "6.5 months"),
+              _buildProjectionRow("Jul 2025", "\$447,500", "10.5"),
+              _buildDivider(),
+              _buildProjectionRow("Aug 2025", "\$413,500", "9.7"),
+              _buildDivider(),
+              _buildProjectionRow("Sep 2025", "\$379,500", "8.9"),
+              _buildDivider(),
+              _buildProjectionRow("Oct 2025", "\$345,500", "8.1"),
+              _buildDivider(),
+              _buildProjectionRow("Nov 2025", "\$311,500", "7.3"),
+              _buildDivider(),
+              _buildProjectionRow("Dec 2025", "\$277,500", "6.5"),
             ],
           ),
         ),
@@ -350,13 +349,24 @@ class RunwayEstimationScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProjectionRow(String month, String balance, String runway) {
+  // Helper for subtle divider
+  Widget _buildDivider() {
+    return Divider(
+      height: 1,
+      thickness: 1,
+      color: Colors.white.withOpacity(0.04),
+    );
+  }
+
+  Widget _buildProjectionRow(String month, String balance, String monthsLeft) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            flex: 3,
+          // 1. Date
+          SizedBox(
+            width: 80,
             child: Text(
               month,
               style: GoogleFonts.inter(
@@ -366,28 +376,40 @@ class RunwayEstimationScreen extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            flex: 3,
-            child: Text(
-              balance,
-              style: GoogleFonts.inter(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                fontFeatures: [const FontFeature.tabularFigures()],
-              ),
+          // 2. Balance
+          Text(
+            balance,
+            style: GoogleFonts.inter(
+              color: Colors.white,
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              fontFeatures: [const FontFeature.tabularFigures()],
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: Text(
-              runway,
-              textAlign: TextAlign.end,
-              style: GoogleFonts.inter(
-                color: Colors.white38,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
+          // 3. Months (Fixed Alignment: In Front/One line)
+          SizedBox(
+            width: 80,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  monthsLeft,
+                  style: GoogleFonts.inter(
+                    color: Colors.white54,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  "mo", // Shortened to 'mo' to ensure it stays on one line
+                  style: GoogleFonts.inter(
+                    color: Colors.white38,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -424,13 +446,13 @@ class RunwayEstimationScreen extends StatelessWidget {
                 "Marketing costs increased 15% this quarter",
                 const Color(0xFFFF9F0A),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
               _buildRiskItem(
                 "Seasonal Revenue Dip",
                 "Q4 typically shows 20% lower revenue",
                 const Color(0xFFFF9F0A),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
               _buildRiskItem(
                 "Upcoming Hiring",
                 "3 new hires planned for next month",
@@ -453,7 +475,7 @@ class RunwayEstimationScreen extends StatelessWidget {
           margin: const EdgeInsets.only(top: 6),
           decoration: BoxDecoration(color: riskColor, shape: BoxShape.circle),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: 16),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -462,7 +484,7 @@ class RunwayEstimationScreen extends StatelessWidget {
                 title,
                 style: GoogleFonts.inter(
                   color: Colors.white,
-                  fontSize: 14,
+                  fontSize: 15,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -471,8 +493,9 @@ class RunwayEstimationScreen extends StatelessWidget {
                 description,
                 style: GoogleFonts.inter(
                   color: Colors.white38,
-                  fontSize: 12,
+                  fontSize: 13,
                   fontWeight: FontWeight.w400,
+                  height: 1.4,
                 ),
               ),
             ],
@@ -523,7 +546,7 @@ class RunwayEstimationScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                "• Reduce marketing budget by 20% to extend runway by 1.8 months\n• Delay non-essential hiring until Q1 2026\n• Negotiate better terms with SaaS providers (potential \$5k/month savings)\n• Consider early payment discounts from clients",
+                "• Reduce marketing budget by 20% to extend runway by 1.8 months\n\n• Delay non-essential hiring until Q1 2026\n\n• Negotiate better terms with SaaS providers (potential \$5k/month savings)",
                 style: GoogleFonts.inter(
                   color: Colors.white70,
                   fontSize: 14,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:ui'; // Required for FontFeature
+// Required for FontFeature
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -11,7 +11,9 @@ import 'monthly_burn_screen.dart';
 import 'ai_insight_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final Function(int)? onNavigateToTab;
+
+  const HomeScreen({super.key, this.onNavigateToTab});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 1. Header (Minimal)
-                _buildMinimalHeader(),
+                _buildMinimalHeader(context),
 
                 const SizedBox(height: 32),
 
@@ -159,7 +161,7 @@ class HomeScreen extends StatelessWidget {
 
   // --- WIDGET BUILDERS ---
 
-  Widget _buildMinimalHeader() {
+  Widget _buildMinimalHeader(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -188,15 +190,21 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
         // Minimal Profile Placeholder
-        Container(
-          height: 44,
-          width: 44,
-          decoration: BoxDecoration(
-            color: const Color(0xFF141416),
-            shape: BoxShape.circle,
-            border: Border.all(color: Colors.white.withOpacity(0.08)),
+        GestureDetector(
+          onTap: () {
+            // Navigate to settings tab (index 4) in bottom navigation
+            onNavigateToTab?.call(4);
+          },
+          child: Container(
+            height: 44,
+            width: 44,
+            decoration: BoxDecoration(
+              color: const Color(0xFF141416),
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white.withOpacity(0.08)),
+            ),
+            child: const Icon(Icons.person, color: Colors.white38),
           ),
-          child: const Icon(Icons.person, color: Colors.white38),
         ),
       ],
     );

@@ -16,24 +16,27 @@ class NavigationWrapper extends StatefulWidget {
 class _NavigationWrapperState extends State<NavigationWrapper> {
   int _selectedIndex = 0;
 
-  final List<Widget> _screens = [
-    const HomeScreen(),
-    const TeamScreen(),
-    const ExpensesScreen(),
-    const AiScreen(),
-    const SettingsScreen(),
-  ];
-
   void _onTabSelected(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
+  List<Widget> _getScreens() {
+    return [
+      HomeScreen(onNavigateToTab: _onTabSelected),
+      const TeamScreen(),
+      const ExpensesScreen(),
+      const AiScreen(),
+      const SettingsScreen(),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
+    final screens = _getScreens();
     return Scaffold(
-      body: _screens[_selectedIndex],
+      body: screens[_selectedIndex],
       bottomNavigationBar: ModernDarkNavBar(
         onTabSelected: _onTabSelected,
         selectedIndex: _selectedIndex,
