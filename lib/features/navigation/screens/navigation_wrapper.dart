@@ -3,11 +3,9 @@ import 'package:flutter/services.dart';
 // Required for FontFeature
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fl_chart/fl_chart.dart';
-
-// --- Screen Imports (Restored) ---
-import 'runway_estimation_screen.dart';
-import 'funds_overview_screen.dart';
-import 'monthly_burn_screen.dart';
+import 'package:startup_expense_tracker/features/home/screens/funds_overview_screen.dart';
+import 'package:startup_expense_tracker/features/home/screens/runway_estimation_screen.dart';
+import 'package:startup_expense_tracker/features/home/screens/monthly_burn_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

@@ -603,9 +603,7 @@ class _CompanySetupScreenState extends State<CompanySetupScreen> {
               // Finish Logic - Navigate to Homepage
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => const NavigationWrapper(),
-                ),
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
               );
             }
           },
