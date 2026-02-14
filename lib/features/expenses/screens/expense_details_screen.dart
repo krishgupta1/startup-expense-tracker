@@ -70,12 +70,7 @@ class ExpenseDetailsScreen extends StatelessWidget {
 
                       const SizedBox(height: 40),
 
-                      // AI Suggestion Pill
-                      _buildAIPill(),
-
-                      const SizedBox(height: 40),
-
-                      // Details Grid
+                      // --- DETAILS SECTION ---
                       _buildSectionTitle("DETAILS"),
                       const SizedBox(height: 16),
                       Container(
@@ -209,51 +204,6 @@ class ExpenseDetailsScreen extends StatelessWidget {
               fontSize: 11,
               fontWeight: FontWeight.bold,
               letterSpacing: 1.0,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAIPill() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        // Transparent with border
-        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(
-                Icons.auto_awesome,
-                color: Color(0xFF0A84FF),
-                size: 16,
-              ),
-              const SizedBox(width: 12),
-              Text(
-                "AI INSIGHT",
-                style: GoogleFonts.inter(
-                  color: const Color(0xFF0A84FF), // Blue accent for AI
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.0,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            "This expense is 15% higher than your average for Infrastructure. Consider reviewing unused instances.",
-            style: GoogleFonts.inter(
-              color: Colors.white.withValues(alpha: 0.9),
-              fontSize: 14,
-              height: 1.5,
             ),
           ),
         ],

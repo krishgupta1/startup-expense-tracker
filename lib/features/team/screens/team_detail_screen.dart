@@ -84,11 +84,6 @@ class _TeamDetailScreenState extends State<TeamDetailScreen> {
 
                       const SizedBox(height: 32),
 
-                      // --- AI INSIGHT ---
-                      _buildAIPill(),
-
-                      const SizedBox(height: 40),
-
                       // --- MEMBERS LIST HEADER ---
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -268,51 +263,6 @@ class _TeamDetailScreenState extends State<TeamDetailScreen> {
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
               ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAIPill() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(
-                Icons.auto_awesome,
-                color: Color(0xFF0A84FF),
-                size: 16,
-              ),
-              const SizedBox(width: 12),
-              Text(
-                "TEAM INSIGHT",
-                style: GoogleFonts.inter(
-                  color: const Color(0xFF0A84FF),
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.0,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            "Backend development costs are 20% higher than industry average. Consider optimizing resource allocation.",
-            style: GoogleFonts.inter(
-              color: Colors.white70,
-              fontSize: 14,
-              height: 1.5,
-              fontWeight: FontWeight.w400,
             ),
           ),
         ],

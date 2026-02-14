@@ -123,7 +123,9 @@ class _TeamScreenState extends State<TeamScreen> {
         if (option == "Name") {
           _selectedOrder = _selectedOrder == "A-Z" ? "Z-A" : "A-Z";
         } else {
-          _selectedOrder = _selectedOrder == "Low-High" ? "High-Low" : "Low-High";
+          _selectedOrder = _selectedOrder == "Low-High"
+              ? "High-Low"
+              : "Low-High";
         }
       } else {
         // Select new option and reset to default order
@@ -156,12 +158,6 @@ class _TeamScreenState extends State<TeamScreen> {
 
                 const SizedBox(height: 32),
 
-                // 2. AI Insight (Hide when searching)
-                if (!_isSearching) ...[
-                  _buildAIPill(),
-                  const SizedBox(height: 32),
-                ],
-
                 // 3. Section Title & Filter Component
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -171,15 +167,13 @@ class _TeamScreenState extends State<TeamScreen> {
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 16),
 
                 // 4. NEW: Horizontal Filter Component (Chips)
-                if (!_isSearching)
-                  _buildFilterChips(),
-                
-                if (!_isSearching)
-                  const SizedBox(height: 24),
+                if (!_isSearching) _buildFilterChips(),
+
+                if (!_isSearching) const SizedBox(height: 24),
 
                 // 5. Teams List
                 _filteredTeams.isEmpty
@@ -223,19 +217,19 @@ class _TeamScreenState extends State<TeamScreen> {
       child: Row(
         children: [
           _buildFilterChip(
-            label: "Name", 
+            label: "Name",
             icon: Icons.sort_by_alpha,
             isSelected: _selectedSortOption == "Name",
           ),
           const SizedBox(width: 12),
           _buildFilterChip(
-            label: "Monthly Amount", 
+            label: "Monthly Amount",
             icon: Icons.attach_money,
             isSelected: _selectedSortOption == "Monthly Amount",
           ),
           const SizedBox(width: 12),
           _buildFilterChip(
-            label: "Team Size", 
+            label: "Team Size",
             icon: Icons.group_outlined,
             isSelected: _selectedSortOption == "Team Size",
           ),
@@ -245,16 +239,20 @@ class _TeamScreenState extends State<TeamScreen> {
   }
 
   Widget _buildFilterChip({
-    required String label, 
-    required IconData icon, 
-    required bool isSelected
+    required String label,
+    required IconData icon,
+    required bool isSelected,
   }) {
     // Determine arrow direction for display
     IconData arrowIcon;
     if (label == "Name") {
-      arrowIcon = _selectedOrder == "A-Z" ? Icons.arrow_downward : Icons.arrow_upward;
+      arrowIcon = _selectedOrder == "A-Z"
+          ? Icons.arrow_downward
+          : Icons.arrow_upward;
     } else {
-      arrowIcon = _selectedOrder == "High-Low" ? Icons.arrow_downward : Icons.arrow_upward;
+      arrowIcon = _selectedOrder == "High-Low"
+          ? Icons.arrow_downward
+          : Icons.arrow_upward;
     }
 
     return GestureDetector(
@@ -266,7 +264,9 @@ class _TeamScreenState extends State<TeamScreen> {
           color: isSelected ? const Color(0xFF0A84FF) : const Color(0xFF141416),
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
-            color: isSelected ? const Color(0xFF0A84FF) : Colors.white.withValues(alpha: 0.08)
+            color: isSelected
+                ? const Color(0xFF0A84FF)
+                : Colors.white.withValues(alpha: 0.08),
           ),
         ),
         child: Row(
@@ -287,12 +287,8 @@ class _TeamScreenState extends State<TeamScreen> {
             ),
             if (isSelected) ...[
               const SizedBox(width: 6),
-              Icon(
-                arrowIcon,
-                color: Colors.white,
-                size: 14,
-              ),
-            ]
+              Icon(arrowIcon, color: Colors.white, size: 14),
+            ],
           ],
         ),
       ),
@@ -402,51 +398,6 @@ class _TeamScreenState extends State<TeamScreen> {
     );
   }
 
-  Widget _buildAIPill() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(
-                Icons.auto_awesome,
-                color: Color(0xFF0A84FF),
-                size: 16,
-              ),
-              const SizedBox(width: 12),
-              Text(
-                "STAFFING INSIGHT",
-                style: GoogleFonts.inter(
-                  color: const Color(0xFF0A84FF),
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.0,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            "Engineering costs have risen by 12% due to new hires. Marketing is currently under budget.",
-            style: GoogleFonts.inter(
-              color: Colors.white70,
-              fontSize: 14,
-              height: 1.5,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildSectionTitle(String title) {
     return Text(
       title,
@@ -494,7 +445,9 @@ class _TeamScreenState extends State<TeamScreen> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: (team['color'] as Color).withValues(alpha: 0.15),
+                          color: (team['color'] as Color).withValues(
+                            alpha: 0.15,
+                          ),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Icon(

@@ -41,11 +41,6 @@ class RunwayEstimationScreen extends StatelessWidget {
                 // Risk Factors
                 _buildRiskFactorsSection(),
 
-                const SizedBox(height: 32),
-
-                // Recommendations
-                _buildRecommendationsSection(),
-
                 const SizedBox(height: 40),
               ],
             ),
@@ -472,62 +467,6 @@ class RunwayEstimationScreen extends StatelessWidget {
                 style: GoogleFonts.inter(
                   color: Colors.white38,
                   fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildRecommendationsSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "AI Recommendations",
-          style: GoogleFonts.inter(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            letterSpacing: -0.5,
-          ),
-        ),
-        const SizedBox(height: 20),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Icon(Icons.auto_awesome, color: Colors.white, size: 16),
-                  const SizedBox(width: 12),
-                  Text(
-                    "OPTIMIZATION OPPORTUNITIES",
-                    style: GoogleFonts.inter(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Text(
-                "• Reduce marketing budget by 20% to extend runway by 1.8 months\n• Delay non-essential hiring until Q1 2026\n• Negotiate better terms with SaaS providers (potential \$5k/month savings)\n• Consider early payment discounts from clients",
-                style: GoogleFonts.inter(
-                  color: Colors.white70,
-                  fontSize: 14,
-                  height: 1.6,
                   fontWeight: FontWeight.w400,
                 ),
               ),

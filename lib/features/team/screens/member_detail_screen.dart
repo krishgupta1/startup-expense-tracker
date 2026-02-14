@@ -49,11 +49,6 @@ class MemberDetailScreen extends StatelessWidget {
 
                       const SizedBox(height: 32),
 
-                      // --- AI INSIGHT ---
-                      _buildAIPill(),
-
-                      const SizedBox(height: 32),
-
                       // --- DETAILS SECTION ---
                       _buildSectionTitle("EMPLOYMENT DETAILS"),
                       const SizedBox(height: 16),
@@ -214,7 +209,10 @@ class MemberDetailScreen extends StatelessWidget {
           height: 100,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: statusColor.withValues(alpha: 0.5), width: 2),
+            border: Border.all(
+              color: statusColor.withValues(alpha: 0.5),
+              width: 2,
+            ),
             image: DecorationImage(
               image: NetworkImage(avatarUrl),
               fit: BoxFit.cover,
@@ -303,51 +301,6 @@ class MemberDetailScreen extends StatelessWidget {
                 style: GoogleFonts.inter(color: Colors.white38, fontSize: 12),
               ),
             ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAIPill() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(
-                Icons.auto_awesome,
-                color: Color(0xFF0A84FF),
-                size: 16,
-              ),
-              const SizedBox(width: 12),
-              Text(
-                "PERFORMANCE INSIGHT",
-                style: GoogleFonts.inter(
-                  color: const Color(0xFF0A84FF),
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.0,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            "James's cost efficiency is in the top 10% of engineers. Market rate for this role is currently \$14k/mo.",
-            style: GoogleFonts.inter(
-              color: Colors.white70,
-              fontSize: 14,
-              height: 1.5,
-              fontWeight: FontWeight.w400,
-            ),
           ),
         ],
       ),

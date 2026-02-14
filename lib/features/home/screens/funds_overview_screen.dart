@@ -46,11 +46,6 @@ class FundsOverviewScreen extends StatelessWidget {
                 // Funding Milestones
                 _buildFundingMilestones(),
 
-                const SizedBox(height: 32),
-
-                // Investment Recommendations
-                _buildInvestmentRecommendations(),
-
                 const SizedBox(height: 40),
               ],
             ),
@@ -637,62 +632,6 @@ class FundsOverviewScreen extends StatelessWidget {
               fontWeight: FontWeight.bold,
               letterSpacing: 0.5,
             ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildInvestmentRecommendations() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "AI Investment Insights",
-          style: GoogleFonts.inter(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            letterSpacing: -0.5,
-          ),
-        ),
-        const SizedBox(height: 20),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Icon(Icons.auto_awesome, color: Colors.white, size: 16),
-                  const SizedBox(width: 12),
-                  Text(
-                    "CAPITAL OPTIMIZATION",
-                    style: GoogleFonts.inter(
-                      color: Colors.white,
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Text(
-                "• Consider high-yield savings for reserve funds (\$42,500/year potential)\n• Diversify holdings: 70% operating, 20% reserve, 10% growth\n• Start Series A preparation in 3 months based on current burn rate\n• Explore strategic partnerships for non-dilutive funding",
-                style: GoogleFonts.inter(
-                  color: Colors.white70,
-                  fontSize: 14,
-                  height: 1.6,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ],
           ),
         ),
       ],

@@ -8,7 +8,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'runway_estimation_screen.dart';
 import 'funds_overview_screen.dart';
 import 'monthly_burn_screen.dart';
-import 'ai_insight_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -93,22 +92,7 @@ class HomeScreen extends StatelessWidget {
 
                 const SizedBox(height: 32),
 
-                // 4. AI Insight (Flat Bordered Pill)
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AIInsightScreen(),
-                      ),
-                    );
-                  },
-                  child: _buildFlatAIPill(),
-                ),
-
-                const SizedBox(height: 40),
-
-                // 5. Trend Chart (Corrected to show Bars)
+                // 4. Trend Chart (Corrected to show Bars)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -208,48 +192,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFlatAIPill() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        // Transparent background, only border
-        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.auto_awesome, color: Colors.white, size: 16),
-              const SizedBox(width: 12),
-              Text(
-                "INSIGHT",
-                style: GoogleFonts.inter(
-                  color: Colors.white,
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.0,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            "Projected burn rate may decrease by 8% if marketing spend is optimized.",
-            style: GoogleFonts.inter(
-              color: Colors.white70,
-              fontSize: 14,
-              height: 1.5,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildFlatRunwayCard(HealthStatus status) {
     Color statusColor;
     String statusText;
@@ -299,7 +241,9 @@ class HomeScreen extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.1),
+                  ),
                 ),
                 child: Row(
                   children: [

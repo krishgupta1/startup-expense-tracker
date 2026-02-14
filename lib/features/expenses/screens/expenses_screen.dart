@@ -84,11 +84,6 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
 
                 const SizedBox(height: 40),
 
-                // 4. AI Insight (Flat Bordered Pill)
-                _buildFlatAIPill(),
-
-                const SizedBox(height: 40),
-
                 // 5. Transactions (Clean List)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -309,48 +304,6 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildFlatAIPill() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        // Transparent background, only border
-        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.auto_awesome, color: Colors.white, size: 16),
-              const SizedBox(width: 12),
-              Text(
-                "INSIGHT",
-                style: GoogleFonts.inter(
-                  color: Colors.white,
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.0,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            "Subscriptions are 15% higher this month. Review your AWS instances.",
-            style: GoogleFonts.inter(
-              color: Colors.white70,
-              fontSize: 14,
-              height: 1.5,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ],
-      ),
     );
   }
 
